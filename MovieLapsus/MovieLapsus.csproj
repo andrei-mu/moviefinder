@@ -89,10 +89,13 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="IMovieDB_API_RAW.cs" />
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="MovieDB_API.cs" />
+    <Compile Include="MovieDBAPI.cs" />
+    <Compile Include="MovieDBQueries.cs" />
+    <Compile Include="MovieDBStructures.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
