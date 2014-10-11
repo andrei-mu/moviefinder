@@ -78,7 +78,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="UnitTest_MovieDB_API_RAW.cs" />
+    <Compile Include="UnitTest_JsonParserStructures.cs" />
+    <Compile Include="UnitTest_MovieDBAPI.cs" />
+    <Compile Include="UnitTest_MovieDBQuery.cs" />
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest">

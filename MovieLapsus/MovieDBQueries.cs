@@ -6,14 +6,13 @@ using System.Threading.Tasks;
 using System.Net;
 
 
-namespace imdbmov
+namespace MovieLapsus
 {
-    public class MovieDB_API_RAW
+    public class MovieDBQueries : IMovieDBQueries
     {
         private static string API_KEY = "7d3315bb7234145c8d3b6e4b89e6ec55";
         private static string LISTS = "http://api.themoviedb.org/3/person/{ACTOR_ID}/movie_credits?api_key={APIKEY}";
         private static string ACTOR_QUERY = "http://api.themoviedb.org/3/search/person?api_key={APIKEY}&query={ACTOR_NAME}";
-        private static string STRING_TEST_QUERY = "http://www.google.com";
 
         private string ActorSearchQuery
         {

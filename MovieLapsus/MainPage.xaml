@@ -9,6 +9,36 @@
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <Grid>
+        <StackPanel Orientation="Vertical">
+            <TextBox x:Name="firstActorTB1" 
+                     Margin="0"
+                     TextWrapping="Wrap" 
+                     Text="" 
+                     VerticalAlignment="Stretch" 
+                     TextChanged="OnTextChanged1"/>
 
+            <TextBlock x:Name="firstActorResult1"
+                       TextWrapping="Wrap" Text=""
+                       FontSize="40"/>
+            
+            <TextBox x:Name="firstActorTB2" 
+                     Margin="0"
+                     TextWrapping="Wrap" 
+                     Text="" 
+                     VerticalAlignment="Stretch" 
+                     TextChanged="OnTextChanged2"/>
+
+            <TextBlock x:Name="firstActorResult2"
+                       TextWrapping="Wrap" Text=""
+                       FontSize="40"/>
+            <Button Content="Search"
+                    HorizontalAlignment="Stretch"
+                    VerticalAlignment="Stretch" Click="OnSearchClicked"/>
+            <TextBlock x:Name="commonMovies"
+                       TextWrapping="Wrap"
+                       Text=""
+                       Height="260"
+                       FontSize="20"/>
+        </StackPanel>
     </Grid>
 </Page>

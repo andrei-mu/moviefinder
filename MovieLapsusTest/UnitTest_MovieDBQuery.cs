@@ -3,15 +3,15 @@ using Microsoft.VisualStudio.TestPlatform.UnitTestFramework;
 using System.Threading.Tasks;
 using System.Net;
 
-namespace imdbmov_testapp
+namespace MovieLapsusTest
 {
     [TestClass]
-    public class UnitTest_MovieDB_API_RAW
+    public class UnitTest_MovieDBQuery
     {
         [TestMethod]
         public async Task Test_SearchForActor_List()
         {
-            var api = new imdbmov.MovieDB_API_RAW();
+            var api = new MovieLapsus.MovieDBQueries();
 
             string ret = await api.SearchForActor("pitt");
 
@@ -24,7 +24,7 @@ namespace imdbmov_testapp
         [TestMethod]
         public async Task Test_SearchForActor_ID()
         {
-            var api = new imdbmov.MovieDB_API_RAW();
+            var api = new MovieLapsus.MovieDBQueries();
 
             string ret = await api.SearchForActor("brad pitt");
 
@@ -33,9 +33,9 @@ namespace imdbmov_testapp
         }
 
         [TestMethod]
-        public async Task Test_ActorMovieList()
+        public async Task Test_ActorMovieListFromID()
         {
-            var api = new imdbmov.MovieDB_API_RAW();
+            var api = new MovieLapsus.MovieDBQueries();
 
             string ret = await api.GetActorInfoFromID("287");
 

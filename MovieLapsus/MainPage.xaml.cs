@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Text;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.UI.Xaml;
@@ -22,9 +23,14 @@ namespace MovieLapsus
     /// </summary>
     public sealed partial class MainPage : Page
     {
+        private MovieDBQueries dbQueries;
+        private MovieDBAPI dbApi;
         public MainPage()
         {
             this.InitializeComponent();
+
+            dbQueries = new MovieDBQueries();
+            dbApi = new MovieDBAPI();
 
             this.NavigationCacheMode = NavigationCacheMode.Required;
         }
@@ -44,5 +50,80 @@ namespace MovieLapsus
             // If you are using the NavigationHelper provided by some templates,
             // this event is handled for you.
         }
+
+        private async void OnTextChanged1(object sender, TextChangedEventArgs e)
+        {
+            var tb = sender as TextBox;
+
+            if (tb.Text.Length <= 3)
+            {
+                firstActorResult1.Text = "";
+                return;
+            }
+
+            var searchInfo = await dbApi.SearchForActor(dbQueries, tb.Text);
+
+            if (searchInfo.results.Count == 0)
+            {
+                firstActorResult1.Text = "no result";
+                return;
+            }
+
+            firstActorResult1.Text = searchInfo.results.First().name;
+            firstActorResult1.Tag = searchInfo.results.First().id.ToString();
+        }
+
+        private async void OnTextChanged2(object sender, TextChangedEventArgs e)
+        {
+            var tb = sender as TextBox;
+
+            if (tb.Text.Length <= 3)
+            {
+                firstActorResult2.Text = "";
+                return;
+            }
+
+            var searchInfo = await dbApi.SearchForActor(dbQueries, tb.Text);
+
+            if (searchInfo.results.Count == 0)
+            {
+                firstActorResult2.Text = "no result";
+                return;
+            }
+
+            firstActorResult2.Text = searchInfo.results.First().name;
+            firstActorResult2.Tag = searchInfo.results.First().id.ToString();
+
+        }
+
+        private async void OnSearchClicked(object sender, RoutedEventArgs e)
+        {
+            string id1 = firstActorResult1.Tag as string;
+            string id2 = firstActorResult2.Tag as string;
+
+            var actorInfo1 = await dbApi.GetActorInfoFromID(dbQueries, id1);
+            var actorInfo2 = await dbApi.GetActorInfoFromID(dbQueries, id2);
+
+            //var products = from product in lstProds
+            //               join employee in lstEmps on product.SiteId equals employee.SiteId
+            //               select product;
+            var commonList = from mov1 in actorInfo1.cast
+                             join mov2 in actorInfo2.cast on mov1.id equals mov2.id
+                             select mov1;
+
+            var c = commonList.Count();
+
+            StringBuilder sb = new StringBuilder();
+            sb.AppendLine("Found " + c.ToString() + " movies:");
+            foreach (MovieInfoByID_Cast ai in commonList)
+            {
+                System.Diagnostics.Debug.WriteLine(ai.original_title);
+                sb.AppendLine("  - " + ai.original_title);
+            }
+            commonMovies.Text = sb.ToString();
+            return;
+
+        }
+
     }
 }
