@@ -9,7 +9,7 @@ using System.Runtime.Serialization.Json;
 namespace MovieLapsus
 {
     [DataContract]
-    public struct SearchActor_MovieInfo
+    public class SearchActor_MovieInfo
     {
         [DataMember]
         public bool adult;
@@ -36,7 +36,7 @@ namespace MovieLapsus
     };
 
     [DataContract]
-    public struct SearchActor_ActorInfo
+    public class SearchActor_ActorInfo
     {
         [DataMember]
         public bool adult;
@@ -50,10 +50,16 @@ namespace MovieLapsus
         public double popularity;
         [DataMember]
         public string profile_path;
+
+        public override string ToString()
+        {
+            return name;
+        }
+
     }
 
     [DataContract]
-    public struct SearchActor_Result
+    public class SearchActor_Result
     {
         [DataMember]
         public int page;
@@ -66,7 +72,7 @@ namespace MovieLapsus
     }
 
     [DataContract]
-    public struct MovieInfoByID_Cast
+    public class MovieInfoByID_Cast
     {
         [DataMember]
         public bool adult;
@@ -87,7 +93,7 @@ namespace MovieLapsus
     }
 
     [DataContract]
-    public struct ActorInfoByID
+    public class ActorInfoByID
     {
         [DataMember]
         public List<MovieInfoByID_Cast> cast;

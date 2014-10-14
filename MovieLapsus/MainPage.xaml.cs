@@ -18,6 +18,22 @@ using Windows.UI.Xaml.Navigation;
 
 namespace MovieLapsus
 {
+    internal struct ActorSuggestInfo
+    {
+        public ActorSuggestInfo(string _name, int _id)
+        {
+            name = _name;
+            id = _id;
+        }
+
+        public override string ToString()
+        {
+            return name;
+        }
+
+        public string name;
+        public int id;
+    }
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
@@ -51,6 +67,7 @@ namespace MovieLapsus
             // this event is handled for you.
         }
 
+        /*
         private async void OnTextChanged1(object sender, TextChangedEventArgs e)
         {
             var tb = sender as TextBox;
@@ -95,11 +112,12 @@ namespace MovieLapsus
             firstActorResult2.Tag = searchInfo.results.First().id.ToString();
 
         }
+         * */
 
         private async void OnSearchClicked(object sender, RoutedEventArgs e)
         {
-            string id1 = firstActorResult1.Tag as string;
-            string id2 = firstActorResult2.Tag as string;
+            string id1 = autoSuggest1.Tag.ToString();
+            string id2 = autoSuggest2.Tag.ToString();
 
             var actorInfo1 = await dbApi.GetActorInfoFromID(dbQueries, id1);
             var actorInfo2 = await dbApi.GetActorInfoFromID(dbQueries, id2);
@@ -123,6 +141,38 @@ namespace MovieLapsus
             commonMovies.Text = sb.ToString();
             return;
 
+        }
+
+        private async void OnSuggestBoxTextChanged(AutoSuggestBox sender, AutoSuggestBoxTextChangedEventArgs args)
+        {
+            if (sender.Text.Length <= 3)
+            {
+                sender.ItemsSource = new string[] {};
+                return;
+            }
+
+            if (args.Reason == AutoSuggestionBoxTextChangeReason.UserInput)
+            {
+                var searchInfo = await dbApi.SearchForActor(dbQueries, sender.Text);
+                if (searchInfo.results.Count == 0)
+                    return;
+
+                var suggestedActors = (from result in searchInfo.results
+                                       select result).Take(7);
+
+
+                sender.ItemsSource = suggestedActors;
+            }
+        }
+
+        private void OnSuggestionChosen(AutoSuggestBox sender, AutoSuggestBoxSuggestionChosenEventArgs args)
+        {
+            var selection = args.SelectedItem as SearchActor_ActorInfo;
+
+            if (selection != null)
+            {
+                sender.Tag = selection.id.ToString();
+            }
         }
 
     }
