@@ -39,8 +39,23 @@ namespace MovieLapsus
     /// </summary>
     public sealed partial class MainPage : Page
     {
-        private MovieDBQueries dbQueries;
-        private MovieDBAPI dbApi;
+        private MovieDBQueries dbQueries = null;
+        private MovieDBAPI dbApi = null;
+        private Windows.ApplicationModel.Resources.ResourceLoader resLoader = null;
+
+        public Windows.ApplicationModel.Resources.ResourceLoader ResLoader
+        {
+            get
+            {
+                if (resLoader == null)
+                {
+                    resLoader = new Windows.ApplicationModel.Resources.ResourceLoader();
+                }
+
+                return resLoader;
+            }
+        }
+
         public MainPage()
         {
             this.InitializeComponent();
@@ -67,64 +82,19 @@ namespace MovieLapsus
             // this event is handled for you.
         }
 
-        /*
-        private async void OnTextChanged1(object sender, TextChangedEventArgs e)
-        {
-            var tb = sender as TextBox;
-
-            if (tb.Text.Length <= 3)
-            {
-                firstActorResult1.Text = "";
-                return;
-            }
-
-            var searchInfo = await dbApi.SearchForActor(dbQueries, tb.Text);
-
-            if (searchInfo.results.Count == 0)
-            {
-                firstActorResult1.Text = "no result";
-                return;
-            }
-
-            firstActorResult1.Text = searchInfo.results.First().name;
-            firstActorResult1.Tag = searchInfo.results.First().id.ToString();
-        }
-
-        private async void OnTextChanged2(object sender, TextChangedEventArgs e)
-        {
-            var tb = sender as TextBox;
-
-            if (tb.Text.Length <= 3)
-            {
-                firstActorResult2.Text = "";
-                return;
-            }
-
-            var searchInfo = await dbApi.SearchForActor(dbQueries, tb.Text);
-
-            if (searchInfo.results.Count == 0)
-            {
-                firstActorResult2.Text = "no result";
-                return;
-            }
-
-            firstActorResult2.Text = searchInfo.results.First().name;
-            firstActorResult2.Tag = searchInfo.results.First().id.ToString();
-
-        }
-         * */
-
         private async void OnSearchClicked(object sender, RoutedEventArgs e)
         {
+            if (autoSuggest1.Tag == null || autoSuggest2.Tag == null)
+            {
+                commonMovies.Text = "Unknown actor(s) selected!";
+                return;
+            }
             string id1 = autoSuggest1.Tag.ToString();
             string id2 = autoSuggest2.Tag.ToString();
 
             var actorInfo1 = await dbApi.GetActorInfoFromID(dbQueries, id1);
             var actorInfo2 = await dbApi.GetActorInfoFromID(dbQueries, id2);
 
-            //var products = from product in lstProds
-            //               join employee in lstEmps on product.SiteId equals employee.SiteId
-            //               select product;
             var commonList = from mov1 in actorInfo1.cast
                              join mov2 in actorInfo2.cast on mov1.id equals mov2.id
                              select mov1;
@@ -139,30 +109,30 @@ namespace MovieLapsus
                 sb.AppendLine("  - " + ai.original_title);
             }
             commonMovies.Text = sb.ToString();
-            return;
-
         }
 
         private async void OnSuggestBoxTextChanged(AutoSuggestBox sender, AutoSuggestBoxTextChangedEventArgs args)
         {
-            if (sender.Text.Length <= 3)
+            if (args.Reason != AutoSuggestionBoxTextChangeReason.UserInput)
+            {
+                return;
+            }
+
+            sender.Tag = null;
+            if (sender.Text.Length <= 2)
             {
                 sender.ItemsSource = new string[] {};
                 return;
             }
 
-            if (args.Reason == AutoSuggestionBoxTextChangeReason.UserInput)
-            {
-                var searchInfo = await dbApi.SearchForActor(dbQueries, sender.Text);
-                if (searchInfo.results.Count == 0)
-                    return;
+            var searchInfo = await dbApi.SearchForActor(dbQueries, sender.Text);
+            if (searchInfo.results.Count == 0)
+                return;
 
-                var suggestedActors = (from result in searchInfo.results
-                                       select result).Take(7);
+            var suggestedActors = (from result in searchInfo.results
+                                    select result).Take(7);
 
-
-                sender.ItemsSource = suggestedActors;
-            }
+            sender.ItemsSource = suggestedActors;
         }
 
         private void OnSuggestionChosen(AutoSuggestBox sender, AutoSuggestBoxSuggestionChosenEventArgs args)
@@ -173,6 +143,39 @@ namespace MovieLapsus
             {
                 sender.Tag = selection.id.ToString();
             }
+        }
+
+        private void OnGotFocus(object sender, RoutedEventArgs e)
+        {
+            var suggestBox = sender as AutoSuggestBox;
+
+            if (suggestBox.FontStyle == Windows.UI.Text.FontStyle.Italic)
+            {
+                suggestBox.FontStyle = Windows.UI.Text.FontStyle.Normal;
+                suggestBox.FontWeight = Windows.UI.Text.FontWeights.Normal;
+
+                suggestBox.Text = "";
+            }
+        }
+
+        private void OnLostFocus(object sender, RoutedEventArgs e)
+        {
+            var suggestBox = sender as AutoSuggestBox;
+
+            if (suggestBox.Text == null || suggestBox.Text.Length == 0)
+            {
+                SetEmptySuggestBox(suggestBox);
+            }
+        }
+
+        private void SetEmptySuggestBox(AutoSuggestBox suggestBox)
+        {
+            var str = ResLoader.GetString("empty_actor_name");
+
+            suggestBox.Tag = null;
+            suggestBox.Text = str;
+            suggestBox.FontStyle = Windows.UI.Text.FontStyle.Italic;
+            suggestBox.FontWeight = Windows.UI.Text.FontWeights.Light;
         }
 
     }
