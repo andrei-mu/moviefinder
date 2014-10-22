@@ -35,6 +35,26 @@ namespace MovieLapsus
             var resultObject = (ActorInfoByID)js.ReadObject(stream);
             return resultObject;
         }
-        
+
+        public async Task<ActorImagesByID> GetActorImagesFromID(IMovieDBQueries rawInterface, string actorID)
+        {
+            string query = await rawInterface.GetActorImagesFromID(actorID);
+
+            DataContractJsonSerializer js = new DataContractJsonSerializer(typeof(ActorImagesByID));
+            MemoryStream stream = new MemoryStream(Encoding.UTF8.GetBytes(query));
+            var resultObject = (ActorImagesByID)js.ReadObject(stream);
+
+            return resultObject;
+        }
+
+        public async Task<DBConfig> GetConfiguration(IMovieDBQueries rawInterface)
+        {
+            string query = await rawInterface.GetConfiguration();
+
+            DataContractJsonSerializer js = new DataContractJsonSerializer(typeof(DBConfig));
+            MemoryStream stream = new MemoryStream(Encoding.UTF8.GetBytes(query));
+            var resultObject = (DBConfig)js.ReadObject(stream);
+            return resultObject;
+        }
     }
 }

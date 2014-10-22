@@ -126,9 +126,6 @@
   <data name="empty_actor_name" xml:space="preserve">
     <value>name of an actor</value>
   </data>
-  <data name="qwe" xml:space="preserve">
-    <value>aassdd</value>
-  </data>
   <data name="SearchActor.Content" xml:space="preserve">
     <value>Actor search</value>
   </data>
@@ -155,5 +152,14 @@
   </data>
   <data name="AdvInfoSearchMovie.Text" xml:space="preserve">
     <value>Search for a movie if you know 2 actors</value>
+  </data>
+  <data name="SearchDesc4Actor" xml:space="preserve">
+    <value>Enter 2 movie title, then press search.</value>
+  </data>
+  <data name="SearchDesc4Movie" xml:space="preserve">
+    <value>Enter 2 actors, then press search.</value>
+  </data>
+  <data name="SearchPage.Text" xml:space="preserve">
+    <value>Search ...</value>
   </data>
 </root>

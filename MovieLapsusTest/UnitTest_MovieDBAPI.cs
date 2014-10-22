@@ -8,25 +8,27 @@ using System.Linq.Expressions;
 
 namespace MovieLapsusTest
 {
-    public class MovieDBQueriesMock : MovieLapsus.IMovieDBQueries
-    {
-        public string actorSearch { get; set; }
-        public string actorInfo { get; set; }
+    //public class MovieDBQueriesMock : MovieLapsus.IMovieDBQueries
+    //{
+    //    public string actorSearch { get; set; }
+    //    public string actorInfo { get; set; }
 
-        async Task<string> MovieLapsus.IMovieDBQueries.GetActorInfoFromID(string actorID)
-        {
-            return await Task.Factory.StartNew(() => { return actorInfo; });
-        }
+    //    async Task<string> MovieLapsus.IMovieDBQueries.GetActorInfoFromID(string actorID)
+    //    {
+    //        return await Task.Factory.StartNew(() => { return actorInfo; });
+    //    }
 
-        async Task<string> MovieLapsus.IMovieDBQueries.SearchForActor(string actorName)
-        {
-            return await Task.Factory.StartNew(() => { return actorSearch; });
-        }
-    }
+    //    async Task<string> MovieLapsus.IMovieDBQueries.SearchForActor(string actorName)
+    //    {
+    //        return await Task.Factory.StartNew(() => { return actorSearch; });
+    //    }
+    //}
 
     [TestClass]
     public class UnitTest_MovieDBAPI
     {
+        private static string BRAD_PITT_ID = "287";
+
         [TestMethod]
         public async Task Test_GetActorList()
         {
@@ -69,7 +71,7 @@ namespace MovieLapsusTest
             var api = new MovieLapsus.MovieDBAPI();
             var queries = new MovieLapsus.MovieDBQueries();
 
-            var actorInfo = await api.GetActorInfoFromID(queries, "287");
+            var actorInfo = await api.GetActorInfoFromID(queries, BRAD_PITT_ID);
 
             Assert.AreEqual(287, actorInfo.id);
             Assert.AreEqual(actorInfo.cast.Count, 55);
@@ -81,6 +83,30 @@ namespace MovieLapsusTest
 
             Assert.AreEqual("Billy Canton", castInfo.character);
             Assert.AreEqual("Too Young to Die?", castInfo.original_title);
+        }
+
+        [TestMethod]
+        public async Task Test_GetActorImages_FromID()
+        {
+            var api = new MovieLapsus.MovieDBAPI();
+            var queries = new MovieLapsus.MovieDBQueries();
+
+            var actorInfo = await api.GetActorImagesFromID(queries, BRAD_PITT_ID);
+
+            Assert.AreEqual(287, actorInfo.id);
+            Assert.IsTrue(actorInfo.profiles.Count > 0);
+        }
+
+
+        [TestMethod]
+        public async Task Test_GetConfiguration()
+        {
+            var api = new MovieLapsus.MovieDBAPI();
+            var queries = new MovieLapsus.MovieDBQueries();
+
+            var config = await api.GetConfiguration(queries);
+
+            Assert.IsTrue(config.images.base_url.Contains("tmdb.org"));
         }
     }
 }

@@ -8,8 +8,40 @@
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
-    <Grid>
-        <StackPanel Orientation="Vertical">
+    <Grid x:Name="LayoutRoot">
+        <Grid.ChildrenTransitions>
+            <TransitionCollection>
+                <EntranceThemeTransition/>
+            </TransitionCollection>
+        </Grid.ChildrenTransitions>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <!-- Title Panel -->
+        
+        <StackPanel Grid.Row="0" Margin="19,0,0,0">
+            <TextBlock x:Uid="ApplicationName"
+                       Style="{ThemeResource TitleTextBlockStyle}"
+                       Margin="0,12,0,0"/>
+
+            <TextBlock x:Uid="SearchPage"
+                       Margin="0,-6.5,0,26.5"
+                       Style="{ThemeResource HeaderTextBlockStyle}"
+                       CharacterSpacing="{ThemeResource PivotHeaderItemCharacterSpacing}"/>
+        </StackPanel>
+
+        <!--TODO: Content should be placed within the following grid-->
+        <Grid Grid.Row="1" x:Name="DescGrid" Margin="19,9.5,19,0">
+            <TextBlock x:Name="searchDescTB"
+                       Text="SearchDesc" 
+                       Margin="0,5,0,25"
+                       Style="{ThemeResource BodyTextBlockStyle}"
+                       />
+        </Grid>
+        <StackPanel Orientation="Vertical" Grid.Row="2">
             <AutoSuggestBox x:Name="autoSuggest1"
                             x:Uid="suggestBox"
                             Margin="10, 20, 10, 10" 

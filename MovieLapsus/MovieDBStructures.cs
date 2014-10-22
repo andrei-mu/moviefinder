@@ -96,9 +96,52 @@ namespace MovieLapsus
     public class ActorInfoByID
     {
         [DataMember]
-        public List<MovieInfoByID_Cast> cast;
-        [DataMember]
         public int id;
+        [DataMember]
+        public List<MovieInfoByID_Cast> cast;
     }
 
+    [DataContract]
+    public class ActorImageProfile
+    {
+        [DataMember]
+        public string file_path;
+        [DataMember]
+        public int width;
+        [DataMember]
+        public int height;
+    }
+    
+    [DataContract]
+    public class ActorImagesByID
+    {
+        [DataMember]
+        public int id;
+        [DataMember]
+        public List<ActorImageProfile> profiles;
+    }
+
+    [DataContract]
+    public class DBImages
+    {
+        [DataMember]
+        public string base_url;
+        [DataMember]
+        public List<string> backdrop_sizes;
+        [DataMember]
+        public List<string> logo_sizes;
+        [DataMember]
+        public List<string> poster_sizes;
+        [DataMember]
+        public List<string> profile_sizes;
+        [DataMember]
+        public List<string> still_sizes;
+    }
+
+    [DataContract]
+    public class DBConfig
+    {
+        [DataMember]
+        public DBImages images;
+    }
 }

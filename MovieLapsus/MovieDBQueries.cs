@@ -11,14 +11,17 @@ namespace MovieLapsus
     public class MovieDBQueries : IMovieDBQueries
     {
         private static string API_KEY = "7d3315bb7234145c8d3b6e4b89e6ec55";
-        private static string LISTS = "http://api.themoviedb.org/3/person/{ACTOR_ID}/movie_credits?api_key={APIKEY}";
-        private static string ACTOR_QUERY = "http://api.themoviedb.org/3/search/person?api_key={APIKEY}&query={ACTOR_NAME}";
+        private static string ACTOR_MOVIES = "http://api.themoviedb.org/3/person/{ACTOR_ID}/movie_credits?api_key={APIKEY}";
+        private static string ACTOR_IMAGES = "http://api.themoviedb.org/3/person/{ACTOR_ID}/images?api_key={APIKEY}"; 
+        
+        private static string SEARCH_ACTOR_QUERY = "http://api.themoviedb.org/3/search/person?api_key={APIKEY}&query={ACTOR_NAME}";
+        private static string CONFIG = "http://api.themoviedb.org/3/configuration?api_key={APIKEY}";
 
         private string ActorSearchQuery
         {
             get
             {
-                return ACTOR_QUERY;
+                return SEARCH_ACTOR_QUERY;
             }
         }
 
@@ -26,7 +29,23 @@ namespace MovieLapsus
         {
             get
             {
-                return LISTS;
+                return ACTOR_MOVIES;
+            }
+        }
+
+        private string ActorImagesQuery
+        {
+            get
+            {
+                return ACTOR_IMAGES;
+            }
+        }
+
+        private string ConfigurationQuery
+        {
+            get
+            {
+                return CONFIG;
             }
         }
 
@@ -81,16 +100,32 @@ namespace MovieLapsus
             actorName = actorName.Replace(" ", "+");
             string query = ActorSearchQuery.Replace("{ACTOR_NAME}", actorName);
 
-            string actorResponse = await this.GenericHTTPQuery(query);
-            return actorResponse;
+            string response = await this.GenericHTTPQuery(query);
+            return response;
         }
 
         public async Task<string> GetActorInfoFromID(string actorID)
         {
             string query = ActorInfoQuery.Replace("{ACTOR_ID}", actorID);
 
-            string actorResponse = await this.GenericHTTPQuery(query);
-            return actorResponse;
+            string response = await this.GenericHTTPQuery(query);
+            return response;
+        }
+
+        public async Task<string> GetActorImagesFromID(string actorID)
+        {
+            string query = ActorImagesQuery.Replace("{ACTOR_ID}", actorID);
+
+            string response = await this.GenericHTTPQuery(query);
+            return response;
+        }
+
+        public async Task<string> GetConfiguration()
+        {
+            string query = ConfigurationQuery;
+
+            string response = await this.GenericHTTPQuery(query);
+            return response;
         }
 
     }
