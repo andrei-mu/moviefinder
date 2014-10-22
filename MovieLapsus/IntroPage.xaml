@@ -37,7 +37,7 @@
         <!--TODO: Content should be placed within the following grid-->
         <Grid Grid.Row="1" x:Name="DescGrid" Margin="19,9.5,19,0">
             <TextBlock x:Uid="SelectDesc"
-                       Text="TextBlock" 
+                       Text="SelectDesc" 
                        Style="{ThemeResource BodyTextBlockStyle}"
                        />
         </Grid>

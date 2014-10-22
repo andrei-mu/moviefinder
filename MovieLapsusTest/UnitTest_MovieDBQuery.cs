@@ -8,6 +8,8 @@ namespace MovieLapsusTest
     [TestClass]
     public class UnitTest_MovieDBQuery
     {
+        private static string BRAD_PITT_ID = "287";
+
         [TestMethod]
         public async Task Test_SearchForActor_List()
         {
@@ -37,7 +39,7 @@ namespace MovieLapsusTest
         {
             var api = new MovieLapsus.MovieDBQueries();
 
-            string ret = await api.GetActorInfoFromID("287");
+            string ret = await api.GetActorInfoFromID(BRAD_PITT_ID);
 
             Assert.IsTrue(ret.Contains("Fight Club"));
             Assert.IsTrue(ret.Contains("Legends of the Fall"));
@@ -45,8 +47,37 @@ namespace MovieLapsusTest
             Assert.IsTrue(ret.Contains("The Curious Case of Benjamin Button"));
             Assert.IsTrue(ret.Contains("Sinbad: Legend of the Seven Seas"));
             Assert.IsTrue(ret.Contains("Johnny Suede"));
-            
-            
         }
+
+        [TestMethod]
+        public async Task Test_GetActorImages()
+        {
+            var api = new MovieLapsus.MovieDBQueries();
+
+            string ret = await api.GetActorImagesFromID(BRAD_PITT_ID);
+
+            Assert.IsTrue(ret.Contains("file_path"));
+            Assert.IsTrue(ret.Contains("height"));
+            Assert.IsTrue(ret.Contains("width"));
+            Assert.IsTrue(ret.Contains(".jpg"));
+            Assert.IsTrue(ret.Contains("profiles"));
+        }
+
+        [TestMethod]
+        public async Task Test_GetConfig()
+        {
+            var api = new MovieLapsus.MovieDBQueries();
+
+            string ret = await api.GetConfiguration();
+
+            Assert.IsTrue(ret.Contains("images"));
+            Assert.IsTrue(ret.Contains("base_url"));
+            Assert.IsTrue(ret.Contains("logo_sizes"));
+            Assert.IsTrue(ret.Contains("poster_sizes"));
+            Assert.IsTrue(ret.Contains("profile_sizes"));
+            Assert.IsTrue(ret.Contains("still_sizes"));
+            Assert.IsTrue(ret.Contains("change_keys"));
+        }
+
     }
 }
