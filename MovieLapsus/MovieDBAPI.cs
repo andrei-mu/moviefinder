@@ -9,16 +9,38 @@ using System.IO;
 
 namespace MovieLapsus
 {
-    public class MovieDBAPI
+    public class MovieDBAPI 
     {
-        public MovieDBAPI()
-        {
+        private static DBConfig _configuration = null;
+        private IMovieDBQueries queryInterface = null;
 
+        public MovieDBAPI(IMovieDBQueries rawInterface)
+        {
+            queryInterface = rawInterface;
         }
 
-        public async Task<SearchActor_Result> SearchForActor(IMovieDBQueries rawInterface, string actorName)
+        public string MakeActorPath(string path)
         {
-            string searchResultString = await rawInterface.SearchForActor(actorName);
+            string fullPath = _configuration.images.base_url + 
+                                       _configuration.images.profile_sizes.First() +
+                                       path;
+
+            return fullPath;
+        }
+
+        public string MakeMoviePath(string path)
+        {
+            string fullPath = _configuration.images.base_url +
+                                       _configuration.images.poster_sizes.First() +
+                                       path;
+
+            return fullPath;
+        }
+
+
+        public async Task<SearchActor_Result> SearchForActor(string actorName)
+        {
+            string searchResultString = await queryInterface.SearchForActor(actorName);
 
             DataContractJsonSerializer js = new DataContractJsonSerializer(typeof(SearchActor_Result));
             MemoryStream stream = new MemoryStream(Encoding.UTF8.GetBytes(searchResultString));
@@ -26,9 +48,9 @@ namespace MovieLapsus
             return resultObject;
         }
 
-        public async Task<ActorInfoByID> GetActorInfoFromID(IMovieDBQueries rawInterface, string actorID)
+        public async Task<ActorInfoByID> GetActorInfoFromID(string actorID)
         {
-            string actorInfoQuery = await rawInterface.GetActorInfoFromID(actorID);
+            string actorInfoQuery = await queryInterface.GetActorInfoFromID(actorID);
 
             DataContractJsonSerializer js = new DataContractJsonSerializer(typeof(ActorInfoByID));
             MemoryStream stream = new MemoryStream(Encoding.UTF8.GetBytes(actorInfoQuery));
@@ -36,9 +58,22 @@ namespace MovieLapsus
             return resultObject;
         }
 
-        public async Task<ActorImagesByID> GetActorImagesFromID(IMovieDBQueries rawInterface, string actorID)
+        public async Task<string> GetActorImageFromID(string actorID)
         {
-            string query = await rawInterface.GetActorImagesFromID(actorID);
+            Task<DBConfig> conf = GetConfiguration();
+
+            var images = await GetActorImageListFromID(actorID);
+            var imagePath = images.profiles.First();
+
+            await conf;
+
+            string path = MakeActorPath(imagePath.file_path);
+            return path;
+        }
+
+        public async Task<ActorImagesByID> GetActorImageListFromID(string actorID)
+        {
+            string query = await queryInterface.GetActorImagesFromID(actorID);
 
             DataContractJsonSerializer js = new DataContractJsonSerializer(typeof(ActorImagesByID));
             MemoryStream stream = new MemoryStream(Encoding.UTF8.GetBytes(query));
@@ -47,14 +82,17 @@ namespace MovieLapsus
             return resultObject;
         }
 
-        public async Task<DBConfig> GetConfiguration(IMovieDBQueries rawInterface)
+        public async Task<DBConfig> GetConfiguration()
         {
-            string query = await rawInterface.GetConfiguration();
+            if (_configuration == null)
+            {
+                string query = await queryInterface.GetConfiguration();
 
-            DataContractJsonSerializer js = new DataContractJsonSerializer(typeof(DBConfig));
-            MemoryStream stream = new MemoryStream(Encoding.UTF8.GetBytes(query));
-            var resultObject = (DBConfig)js.ReadObject(stream);
-            return resultObject;
+                DataContractJsonSerializer js = new DataContractJsonSerializer(typeof(DBConfig));
+                MemoryStream stream = new MemoryStream(Encoding.UTF8.GetBytes(query));
+                _configuration = (DBConfig)js.ReadObject(stream);
+            }
+            return _configuration;
         }
     }
 }

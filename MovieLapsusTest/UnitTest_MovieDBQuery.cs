@@ -9,6 +9,7 @@ namespace MovieLapsusTest
     public class UnitTest_MovieDBQuery
     {
         private static string BRAD_PITT_ID = "287";
+        private static string PULP_FICTION_ID = "680";
 
         [TestMethod]
         public async Task Test_SearchForActor_List()
@@ -18,7 +19,7 @@ namespace MovieLapsusTest
             string ret = await api.SearchForActor("pitt");
 
             Assert.IsTrue(ret.Contains("Brad Pitt"));
-            Assert.IsTrue(ret.Contains("Jacob Pitts"));
+            Assert.IsTrue(ret.Contains("Lloyd Pitts"));
             Assert.IsTrue(ret.Contains("Michael Pitt"));
             Assert.IsTrue(ret.Contains("Ernst Pittschau"));
         }
@@ -55,6 +56,20 @@ namespace MovieLapsusTest
             var api = new MovieLapsus.MovieDBQueries();
 
             string ret = await api.GetActorImagesFromID(BRAD_PITT_ID);
+
+            Assert.IsTrue(ret.Contains("file_path"));
+            Assert.IsTrue(ret.Contains("height"));
+            Assert.IsTrue(ret.Contains("width"));
+            Assert.IsTrue(ret.Contains(".jpg"));
+            Assert.IsTrue(ret.Contains("profiles"));
+        }
+
+        [TestMethod]
+        public async Task Test_GetMovieImages()
+        {
+            var api = new MovieLapsus.MovieDBQueries();
+
+            string ret = await api.GetMovieImagesFromID(PULP_FICTION_ID);
 
             Assert.IsTrue(ret.Contains("file_path"));
             Assert.IsTrue(ret.Contains("height"));

@@ -32,10 +32,11 @@ namespace MovieLapsusTest
         [TestMethod]
         public async Task Test_GetActorList()
         {
-            var api = new MovieLapsus.MovieDBAPI();
-            var queries = new MovieLapsus.MovieDBQueries();
+            var queries = new MovieLapsus.MovieDBQueries(); 
+            var api = new MovieLapsus.MovieDBAPI(queries);
 
-            var actorList = await api.SearchForActor(queries, "pitt");
+
+            var actorList = await api.SearchForActor("pitt");
 
             Assert.AreEqual(actorList.results.Count, 20);
             Assert.AreEqual(actorList.total_pages, 7);
@@ -50,10 +51,10 @@ namespace MovieLapsusTest
         [TestMethod]
         public async Task Test_GetActorList_BradPitt()
         {
-            var api = new MovieLapsus.MovieDBAPI();
             var queries = new MovieLapsus.MovieDBQueries();
+            var api = new MovieLapsus.MovieDBAPI(queries);
 
-            var actorList = await api.SearchForActor(queries, "brad pitt");
+            var actorList = await api.SearchForActor("brad pitt");
 
             Assert.AreEqual(actorList.results.Count, 1);
             Assert.AreEqual(actorList.total_pages, 1);
@@ -68,10 +69,10 @@ namespace MovieLapsusTest
         [TestMethod]
         public async Task Test_GetActorInfo_FromID()
         {
-            var api = new MovieLapsus.MovieDBAPI();
             var queries = new MovieLapsus.MovieDBQueries();
+            var api = new MovieLapsus.MovieDBAPI(queries);
 
-            var actorInfo = await api.GetActorInfoFromID(queries, BRAD_PITT_ID);
+            var actorInfo = await api.GetActorInfoFromID(BRAD_PITT_ID);
 
             Assert.AreEqual(287, actorInfo.id);
             Assert.AreEqual(actorInfo.cast.Count, 55);
@@ -88,10 +89,11 @@ namespace MovieLapsusTest
         [TestMethod]
         public async Task Test_GetActorImages_FromID()
         {
-            var api = new MovieLapsus.MovieDBAPI();
             var queries = new MovieLapsus.MovieDBQueries();
+            var api = new MovieLapsus.MovieDBAPI(queries);
 
-            var actorInfo = await api.GetActorImagesFromID(queries, BRAD_PITT_ID);
+
+            var actorInfo = await api.GetActorImageListFromID(BRAD_PITT_ID);
 
             Assert.AreEqual(287, actorInfo.id);
             Assert.IsTrue(actorInfo.profiles.Count > 0);
@@ -101,10 +103,10 @@ namespace MovieLapsusTest
         [TestMethod]
         public async Task Test_GetConfiguration()
         {
-            var api = new MovieLapsus.MovieDBAPI();
             var queries = new MovieLapsus.MovieDBQueries();
+            var api = new MovieLapsus.MovieDBAPI(queries);
 
-            var config = await api.GetConfiguration(queries);
+            var config = await api.GetConfiguration();
 
             Assert.IsTrue(config.images.base_url.Contains("tmdb.org"));
         }
