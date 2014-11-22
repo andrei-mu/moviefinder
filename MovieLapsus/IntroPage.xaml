@@ -60,7 +60,7 @@
                     FontSize="14"
                     Click="OnButtonClicked"/>
             <TextBlock x:Uid="AdvInfoSearchMovie"
-                       FontSize="12"
+                       FontSize="13"
                        TextWrapping="WrapWholeWords"
                        Grid.Row="1"
                        Grid.Column="1"
@@ -75,7 +75,7 @@
                     FontSize="14"
                     Click="OnButtonClicked"/>
             <TextBlock x:Uid="AdvInfoSearchActor"
-                       FontSize="12"
+                       FontSize="13"
                        TextWrapping="WrapWholeWords"
                        Margin="0,0,10,0"
                        Grid.Row="2"

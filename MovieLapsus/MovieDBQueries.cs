@@ -13,6 +13,7 @@ namespace MovieLapsus
         private static string API_KEY = "7d3315bb7234145c8d3b6e4b89e6ec55";
         private static string ACTOR_MOVIES = "http://api.themoviedb.org/3/person/{ACTOR_ID}/movie_credits?api_key={APIKEY}";
         private static string ACTOR_IMAGES = "http://api.themoviedb.org/3/person/{ACTOR_ID}/images?api_key={APIKEY}"; 
+        private static string MOVIE_IMAGES = "http://api.themoviedb.org/3/movie/{MOVIE_ID}/images?api_key={APIKEY}"; 
         
         private static string SEARCH_ACTOR_QUERY = "http://api.themoviedb.org/3/search/person?api_key={APIKEY}&query={ACTOR_NAME}";
         private static string CONFIG = "http://api.themoviedb.org/3/configuration?api_key={APIKEY}";
@@ -38,6 +39,14 @@ namespace MovieLapsus
             get
             {
                 return ACTOR_IMAGES;
+            }
+        }
+
+        private string MovieImagesQuery
+        {
+            get
+            {
+                return MOVIE_IMAGES;
             }
         }
 
@@ -115,6 +124,14 @@ namespace MovieLapsus
         public async Task<string> GetActorImagesFromID(string actorID)
         {
             string query = ActorImagesQuery.Replace("{ACTOR_ID}", actorID);
+
+            string response = await this.GenericHTTPQuery(query);
+            return response;
+        }
+
+        public async Task<string> GetMovieImagesFromID(string movieID)
+        {
+            string query = MovieImagesQuery.Replace("{MOVIE_ID}", movieID);
 
             string response = await this.GenericHTTPQuery(query);
             return response;
