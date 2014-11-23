@@ -41,8 +41,8 @@ namespace MovieLapsus
     /// </summary>
     public sealed partial class MainPage : Page
     {
-        private MovieDBQueries dbQueries = null;
-        private MovieDBAPI dbApi = null;
+        private TMDB.TMDBQueries dbQueries = null;
+        private TMDB.TMDBAPI dbApi = null;
         private Windows.ApplicationModel.Resources.ResourceLoader resLoader = null;
         private string searchParameter = "";
 
@@ -79,8 +79,8 @@ namespace MovieLapsus
         {
             this.InitializeComponent();
 
-            dbQueries = new MovieDBQueries();
-            dbApi = new MovieDBAPI(dbQueries);
+            dbQueries = new TMDB.TMDBQueries();
+            dbApi = new TMDB.TMDBAPI(dbQueries);
 
             this.NavigationCacheMode = NavigationCacheMode.Required;
         }

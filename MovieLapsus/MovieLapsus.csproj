@@ -102,9 +102,9 @@
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="MovieDBAPI.cs" />
-    <Compile Include="MovieDBQueries.cs" />
-    <Compile Include="MovieDBStructures.cs" />
+    <Compile Include="TMDBAPI.cs" />
+    <Compile Include="TMDBQueries.cs" />
+    <Compile Include="TMDBStructures.cs" />
     <Compile Include="MovieList.xaml.cs">
       <DependentUpon>MovieList.xaml</DependentUpon>
     </Compile>

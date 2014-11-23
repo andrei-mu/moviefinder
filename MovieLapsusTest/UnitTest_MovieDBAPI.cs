@@ -8,22 +8,6 @@ using System.Linq.Expressions;
 
 namespace MovieLapsusTest
 {
-    //public class MovieDBQueriesMock : MovieLapsus.IMovieDBQueries
-    //{
-    //    public string actorSearch { get; set; }
-    //    public string actorInfo { get; set; }
-
-    //    async Task<string> MovieLapsus.IMovieDBQueries.GetActorInfoFromID(string actorID)
-    //    {
-    //        return await Task.Factory.StartNew(() => { return actorInfo; });
-    //    }
-
-    //    async Task<string> MovieLapsus.IMovieDBQueries.SearchForActor(string actorName)
-    //    {
-    //        return await Task.Factory.StartNew(() => { return actorSearch; });
-    //    }
-    //}
-
     [TestClass]
     public class UnitTest_MovieDBAPI
     {
@@ -32,15 +16,15 @@ namespace MovieLapsusTest
         [TestMethod]
         public async Task Test_GetActorList()
         {
-            var queries = new MovieLapsus.MovieDBQueries(); 
-            var api = new MovieLapsus.MovieDBAPI(queries);
+            var queries = new MovieLapsus.TMDB.TMDBQueries(); 
+            var api = new MovieLapsus.TMDB.TMDBAPI(queries);
 
 
             var actorList = await api.SearchForActor("pitt");
 
             Assert.AreEqual(actorList.results.Count, 20);
             Assert.AreEqual(actorList.total_pages, 7);
-            Assert.AreEqual(actorList.total_results, 121);
+            Assert.IsTrue(actorList.total_results > 121);
 
             MovieLapsus.SearchActor_ActorInfo actorInfo = (
                         from ai in actorList.results
@@ -51,8 +35,8 @@ namespace MovieLapsusTest
         [TestMethod]
         public async Task Test_GetActorList_BradPitt()
         {
-            var queries = new MovieLapsus.MovieDBQueries();
-            var api = new MovieLapsus.MovieDBAPI(queries);
+            var queries = new MovieLapsus.TMDB.TMDBQueries();
+            var api = new MovieLapsus.TMDB.TMDBAPI(queries);
 
             var actorList = await api.SearchForActor("brad pitt");
 
@@ -69,8 +53,8 @@ namespace MovieLapsusTest
         [TestMethod]
         public async Task Test_GetActorInfo_FromID()
         {
-            var queries = new MovieLapsus.MovieDBQueries();
-            var api = new MovieLapsus.MovieDBAPI(queries);
+            var queries = new MovieLapsus.TMDB.TMDBQueries();
+            var api = new MovieLapsus.TMDB.TMDBAPI(queries);
 
             var actorInfo = await api.GetActorInfoFromID(BRAD_PITT_ID);
 
@@ -89,8 +73,8 @@ namespace MovieLapsusTest
         [TestMethod]
         public async Task Test_GetActorImages_FromID()
         {
-            var queries = new MovieLapsus.MovieDBQueries();
-            var api = new MovieLapsus.MovieDBAPI(queries);
+            var queries = new MovieLapsus.TMDB.TMDBQueries();
+            var api = new MovieLapsus.TMDB.TMDBAPI(queries);
 
 
             var actorInfo = await api.GetActorImageListFromID(BRAD_PITT_ID);
@@ -103,8 +87,8 @@ namespace MovieLapsusTest
         [TestMethod]
         public async Task Test_GetConfiguration()
         {
-            var queries = new MovieLapsus.MovieDBQueries();
-            var api = new MovieLapsus.MovieDBAPI(queries);
+            var queries = new MovieLapsus.TMDB.TMDBQueries();
+            var api = new MovieLapsus.TMDB.TMDBAPI(queries);
 
             var config = await api.GetConfiguration();
 
