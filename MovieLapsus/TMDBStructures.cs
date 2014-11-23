@@ -9,6 +9,50 @@ using System.Runtime.Serialization.Json;
 namespace MovieLapsus
 {
     [DataContract]
+    public class ActorBiography
+    {
+        [DataMember]
+        public int id;
+        [DataMember]
+        public bool adult;
+        [DataMember]
+        public string biography;
+        [DataMember]
+        public string birthday;
+        [DataMember]
+        public string imdb_id;
+        [DataMember]
+        public string name;
+        [DataMember]
+        public float popularity;
+        [DataMember]
+        public string profile_path;
+    }
+
+    [DataContract]
+    public class MovieDescription
+    {
+        [DataMember]
+        public int id;
+        [DataMember]
+        public bool adult;
+        [DataMember]
+        public string imdb_id;
+        [DataMember]
+        public string original_title;
+        [DataMember]
+        public string poster_path;
+        [DataMember]
+        public string overview;
+        [DataMember]
+        public string tagline;
+        [DataMember]
+        public string release_date;
+        [DataMember]
+        public float popularity;
+    }
+
+    [DataContract]
     public class SearchActor_MovieInfo
     {
         [DataMember]
@@ -93,7 +137,7 @@ namespace MovieLapsus
     }
 
     [DataContract]
-    public class ActorInfoByID
+    public class ActorMoviesByID
     {
         [DataMember]
         public int id;

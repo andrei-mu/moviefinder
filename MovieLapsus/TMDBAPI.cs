@@ -21,7 +21,7 @@ namespace MovieLapsus
                 queryInterface = rawInterface;
             }
 
-            public string MakeActorPath(string path)
+            public string MakeActorPosterPath(string path)
             {
                 string fullPath = _configuration.images.base_url +
                                            _configuration.images.profile_sizes.First() +
@@ -30,7 +30,7 @@ namespace MovieLapsus
                 return fullPath;
             }
 
-            public string MakeMoviePath(string path)
+            public string MakeMoviePosterPath(string path)
             {
                 string fullPath = _configuration.images.base_url +
                                            _configuration.images.poster_sizes.First() +
@@ -49,13 +49,23 @@ namespace MovieLapsus
                 return resultObject;
             }
 
-            public async Task<ActorInfoByID> GetActorInfoFromID(string actorID)
+            public async Task<ActorBiography> GetActorBiographyFromID(string actorID)
             {
-                string actorInfoQuery = await queryInterface.GetActorInfoFromID(actorID);
+                string actorInfoQuery = await queryInterface.GetActorBiographyFromID(actorID);
 
-                DataContractJsonSerializer js = new DataContractJsonSerializer(typeof(ActorInfoByID));
+                DataContractJsonSerializer js = new DataContractJsonSerializer(typeof(ActorBiography));
                 MemoryStream stream = new MemoryStream(Encoding.UTF8.GetBytes(actorInfoQuery));
-                var resultObject = (ActorInfoByID)js.ReadObject(stream);
+                var resultObject = (ActorBiography)js.ReadObject(stream);
+                return resultObject;
+            }
+
+            public async Task<ActorMoviesByID> GetActorMoviesFromID(string actorID)
+            {
+                string actorInfoQuery = await queryInterface.GetActorMoviesFromID(actorID);
+
+                DataContractJsonSerializer js = new DataContractJsonSerializer(typeof(ActorMoviesByID));
+                MemoryStream stream = new MemoryStream(Encoding.UTF8.GetBytes(actorInfoQuery));
+                var resultObject = (ActorMoviesByID)js.ReadObject(stream);
                 return resultObject;
             }
 
@@ -66,7 +76,7 @@ namespace MovieLapsus
                 var images = await GetActorImageListFromID(actorID);
                 var imagePath = images.profiles.First();
 
-                string path = MakeActorPath(imagePath.file_path);
+                string path = MakeActorPosterPath(imagePath.file_path);
                 return path;
             }
 
@@ -77,6 +87,17 @@ namespace MovieLapsus
                 DataContractJsonSerializer js = new DataContractJsonSerializer(typeof(ActorImagesByID));
                 MemoryStream stream = new MemoryStream(Encoding.UTF8.GetBytes(query));
                 var resultObject = (ActorImagesByID)js.ReadObject(stream);
+
+                return resultObject;
+            }
+
+            public async Task<MovieDescription> GetMovieDescriptionFromID(string movieID)
+            {
+                string query = await queryInterface.GetMovieDescriptionFromID(movieID);
+
+                DataContractJsonSerializer js = new DataContractJsonSerializer(typeof(MovieDescription));
+                MemoryStream stream = new MemoryStream(Encoding.UTF8.GetBytes(query));
+                var resultObject = (MovieDescription)js.ReadObject(stream);
 
                 return resultObject;
             }

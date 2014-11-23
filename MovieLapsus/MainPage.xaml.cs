@@ -140,8 +140,8 @@ namespace MovieLapsus
             string id1 = autoSuggest1.Tag.ToString();
             string id2 = autoSuggest2.Tag.ToString();
 
-            var actorInfo1 = await dbApi.GetActorInfoFromID(id1);
-            var actorInfo2 = await dbApi.GetActorInfoFromID(id2);
+            var actorInfo1 = await dbApi.GetActorMoviesFromID(id1);
+            var actorInfo2 = await dbApi.GetActorMoviesFromID(id2);
 
             var commonList = from mov1 in actorInfo1.cast
                              join mov2 in actorInfo2.cast on mov1.id equals mov2.id
@@ -160,9 +160,9 @@ namespace MovieLapsus
 
             foreach (var movie in commonList)
             {
-                movie.poster_path = dbApi.MakeMoviePath(movie.poster_path);
+                movie.poster_path = dbApi.MakeMoviePosterPath(movie.poster_path);
             }
-            Frame.Navigate(typeof(MovieList), commonList);
+            Frame.Navigate(typeof(MovieListPage), commonList);
         }
 
         private async void OnSuggestBoxTextChanged(AutoSuggestBox sender, AutoSuggestBoxTextChangedEventArgs args)
