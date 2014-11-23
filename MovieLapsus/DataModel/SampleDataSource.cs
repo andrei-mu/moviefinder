@@ -151,7 +151,7 @@ namespace MovieLapsus.Data
                     this.Groups.Add(group);
                 }
             }
-            catch(System.Exception ex)
+            catch(System.Exception)
             {
                 return;
             }

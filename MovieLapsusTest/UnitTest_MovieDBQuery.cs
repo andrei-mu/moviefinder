@@ -38,7 +38,7 @@ namespace MovieLapsusTest
         {
             var api = new MovieLapsus.TMDB.TMDBQueries();
 
-            string ret = await api.GetActorInfoFromID(BRAD_PITT_ID);
+            string ret = await api.GetActorMoviesFromID(BRAD_PITT_ID);
 
             Assert.IsTrue(ret.Contains("Fight Club"));
             Assert.IsTrue(ret.Contains("Legends of the Fall"));
@@ -46,6 +46,22 @@ namespace MovieLapsusTest
             Assert.IsTrue(ret.Contains("The Curious Case of Benjamin Button"));
             Assert.IsTrue(ret.Contains("Sinbad: Legend of the Seven Seas"));
             Assert.IsTrue(ret.Contains("Johnny Suede"));
+        }
+
+        [TestMethod]
+        public async Task Test_ActorBiographyFromID()
+        {
+            var api = new MovieLapsus.TMDB.TMDBQueries();
+
+            string ret = await api.GetActorBiographyFromID(BRAD_PITT_ID);
+
+            Assert.IsTrue(ret.Contains("Brad Pitt"));
+            Assert.IsTrue(ret.Contains("biography"));
+            Assert.IsTrue(ret.Contains("imdb_id"));
+            Assert.IsTrue(ret.Contains("nm0000093"));
+            Assert.IsTrue(ret.Contains("name"));
+            Assert.IsTrue(ret.Contains("popularity"));
+            Assert.IsTrue(ret.Contains("profile_path"));
         }
 
         [TestMethod]
@@ -60,6 +76,21 @@ namespace MovieLapsusTest
             Assert.IsTrue(ret.Contains("width"));
             Assert.IsTrue(ret.Contains(".jpg"));
             Assert.IsTrue(ret.Contains("profiles"));
+        }
+
+        [TestMethod]
+        public async Task Test_MovieDescFromID()
+        {
+            var api = new MovieLapsus.TMDB.TMDBQueries();
+
+            string ret = await api.GetMovieDescriptionFromID(PULP_FICTION_ID);
+
+            Assert.IsTrue(ret.Contains("original_title"));
+            Assert.IsTrue(ret.Contains("poster_path"));
+            Assert.IsTrue(ret.Contains("imdb_id"));
+            Assert.IsTrue(ret.Contains("release_date"));
+            Assert.IsTrue(ret.Contains("tagline"));
+            Assert.IsTrue(ret.Contains("popularity"));
         }
 
         [TestMethod]

@@ -21,12 +21,12 @@ using Windows.UI.Xaml.Navigation;
 
 namespace MovieLapsus
 {
-    public sealed partial class MovieList : Page
+    public sealed partial class MovieListPage : Page
     {
         private readonly NavigationHelper navigationHelper;
         private readonly ObservableDictionary defaultViewModel = new ObservableDictionary();
 
-        public MovieList()
+        public MovieListPage()
         {
             this.InitializeComponent();
 
@@ -63,7 +63,7 @@ namespace MovieLapsus
         /// <see cref="Frame.Navigate(Type, Object)"/> when this page was initially requested and
         /// a dictionary of state preserved by this page during an earlier
         /// session.  The state will be null the first time a page is visited.</param>
-        private async void NavigationHelper_LoadState(object sender, LoadStateEventArgs e)
+        private void NavigationHelper_LoadState(object sender, LoadStateEventArgs e)
         {
             // TODO: Create an appropriate data model for your problem domain to replace the sample data.
             //var dataGroup = await SampleDataSource.GetGroupAsync((string)e.NavigationParameter);
@@ -107,7 +107,7 @@ namespace MovieLapsus
         private void ItemView_ItemClick(object sender, ItemClickEventArgs e)
         {
             var itemId = ((SampleDataItem)e.ClickedItem).UniqueId;
-            if (!Frame.Navigate(typeof(MovieList), itemId))
+            if (!Frame.Navigate(typeof(MovieListPage), itemId))
             {
                 var resourceLoader = ResourceLoader.GetForCurrentView("Resources");
                 throw new Exception(resourceLoader.GetString("NavigationFailedExceptionMessage"));

@@ -13,8 +13,12 @@ namespace MovieLapsus
         public class TMDBQueries : TMDB.IMovieDBQueries
         {
             private static string API_KEY = "7d3315bb7234145c8d3b6e4b89e6ec55";
-            private static string ACTOR_MOVIES = "http://api.themoviedb.org/3/person/{ACTOR_ID}/movie_credits?api_key={APIKEY}";
+
+            private static string ACTOR_INFO = "http://api.themoviedb.org/3/person/{ACTOR_ID}?api_key={APIKEY}"; 
+            private static string ACTOR_MOVIES = "http://api.themoviedb.org/3/person/{ACTOR_ID}/combined_credits?api_key={APIKEY}";
             private static string ACTOR_IMAGES = "http://api.themoviedb.org/3/person/{ACTOR_ID}/images?api_key={APIKEY}";
+
+            private static string MOVIE_DESC = "http://api.themoviedb.org/3/movie/{MOVIE_ID}?api_key={APIKEY}";
             private static string MOVIE_IMAGES = "http://api.themoviedb.org/3/movie/{MOVIE_ID}/images?api_key={APIKEY}";
 
             private static string SEARCH_ACTOR_QUERY = "http://api.themoviedb.org/3/search/person?api_key={APIKEY}&query={ACTOR_NAME}";
@@ -28,7 +32,15 @@ namespace MovieLapsus
                 }
             }
 
-            private string ActorInfoQuery
+            private string ActorBiographyQuery
+            {
+                get
+                {
+                    return ACTOR_INFO;
+                }
+            }
+
+            private string ActorMoviesQuery
             {
                 get
                 {
@@ -41,6 +53,14 @@ namespace MovieLapsus
                 get
                 {
                     return ACTOR_IMAGES;
+                }
+            }
+
+            private string MovieDescQuery
+            {
+                get
+                {
+                    return MOVIE_DESC;
                 }
             }
 
@@ -115,9 +135,18 @@ namespace MovieLapsus
                 return response;
             }
 
-            public async Task<string> GetActorInfoFromID(string actorID)
+            public async Task<string> GetActorBiographyFromID(string actorID)
             {
-                string query = ActorInfoQuery.Replace("{ACTOR_ID}", actorID);
+                actorID = actorID.Replace(" ", "+");
+                string query = ActorBiographyQuery.Replace("{ACTOR_ID}", actorID);
+
+                string response = await this.GenericHTTPQuery(query);
+                return response;
+            }
+
+            public async Task<string> GetActorMoviesFromID(string actorID)
+            {
+                string query = ActorMoviesQuery.Replace("{ACTOR_ID}", actorID);
 
                 string response = await this.GenericHTTPQuery(query);
                 return response;
@@ -134,6 +163,14 @@ namespace MovieLapsus
             public async Task<string> GetMovieImagesFromID(string movieID)
             {
                 string query = MovieImagesQuery.Replace("{MOVIE_ID}", movieID);
+
+                string response = await this.GenericHTTPQuery(query);
+                return response;
+            }
+
+            public async Task<string> GetMovieDescriptionFromID(string movieID)
+            {
+                string query = MovieDescQuery.Replace("{MOVIE_ID}", movieID);
 
                 string response = await this.GenericHTTPQuery(query);
                 return response;
