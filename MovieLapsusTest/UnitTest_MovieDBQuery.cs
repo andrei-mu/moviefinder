@@ -27,10 +27,10 @@ namespace MovieLapsusTest
         {
             var api = new MovieLapsus.TMDB.TMDBQueries();
 
-            string ret = await api.SearchForMovie("fight");
+            string ret = await api.SearchForMovie("fight", true);
 
-            Assert.IsTrue(ret.Contains(""));
-            Assert.IsTrue(ret.Contains(""));
+            Assert.IsTrue(ret.Contains("Fight Club"));
+            Assert.IsTrue(ret.Contains("The Fighter"));
         }
 
         [TestMethod]

@@ -99,7 +99,35 @@ namespace MovieLapsus
         {
             return name;
         }
+    }
 
+    [DataContract]
+    public class SearchMovie_Result
+    {
+        [DataMember]
+        public bool adult;
+        [DataMember]
+        public int id;
+        [DataMember]
+        public string original_title;
+        [DataMember]
+        public string release_date;
+        [DataMember]
+        public string poster_path;
+        [DataMember]
+        public float popularity;
+        [DataMember]
+        public string title;
+    }
+
+    [DataContract]
+    public class SearchMovie_Page
+    {
+        [DataMember]
+        public int page;
+
+        [DataMember]
+        public List<SearchMovie_Result> results; 
     }
 
     [DataContract]

@@ -49,6 +49,15 @@ namespace MovieLapsus
                 return resultObject;
             }
 
+            public async Task<SearchMovie_Page> SearchForMovie(string movieName, bool autocomplete)
+            {
+                string searchResultString = await queryInterface.SearchForMovie(movieName, autocomplete);
+
+                DataContractJsonSerializer js = new DataContractJsonSerializer(typeof(SearchMovie_Page));
+                MemoryStream stream = new MemoryStream(Encoding.UTF8.GetBytes(searchResultString));
+                var resultObject = (SearchMovie_Page)js.ReadObject(stream);
+                return resultObject;
+            }
             public async Task<ActorBiography> GetActorBiographyFromID(string actorID)
             {
                 string actorInfoQuery = await queryInterface.GetActorBiographyFromID(actorID);
