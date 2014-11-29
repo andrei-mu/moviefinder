@@ -59,6 +59,28 @@ namespace MovieLapsus
                 return resultObject;
             }
 
+            public async Task<MovieDescription> GetMovieDescriptionFromID(string movieID)
+            {
+                string query = await queryInterface.GetMovieDescriptionFromID(movieID);
+
+                DataContractJsonSerializer js = new DataContractJsonSerializer(typeof(MovieDescription));
+                MemoryStream stream = new MemoryStream(Encoding.UTF8.GetBytes(query));
+                var resultObject = (MovieDescription)js.ReadObject(stream);
+
+                return resultObject;
+            }
+
+            public async Task<MovieCredits> GetMovieCreditsFromID(string movieID)
+            {
+                string query = await queryInterface.GetMovieCreditsFromID(movieID);
+
+                DataContractJsonSerializer js = new DataContractJsonSerializer(typeof(MovieCredits));
+                MemoryStream stream = new MemoryStream(Encoding.UTF8.GetBytes(query));
+                var resultObject = (MovieCredits)js.ReadObject(stream);
+
+                return resultObject;
+            }
+
             public async Task<ActorMoviesByID> GetActorMoviesFromID(string actorID)
             {
                 string actorInfoQuery = await queryInterface.GetActorMoviesFromID(actorID);
@@ -91,16 +113,6 @@ namespace MovieLapsus
                 return resultObject;
             }
 
-            public async Task<MovieDescription> GetMovieDescriptionFromID(string movieID)
-            {
-                string query = await queryInterface.GetMovieDescriptionFromID(movieID);
-
-                DataContractJsonSerializer js = new DataContractJsonSerializer(typeof(MovieDescription));
-                MemoryStream stream = new MemoryStream(Encoding.UTF8.GetBytes(query));
-                var resultObject = (MovieDescription)js.ReadObject(stream);
-
-                return resultObject;
-            }
 
             public async Task<DBConfig> GetConfiguration()
             {
