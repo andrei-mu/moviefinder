@@ -137,6 +137,32 @@ namespace MovieLapsus
     }
 
     [DataContract]
+    public class MovieCredits_Cast
+    {
+        [DataMember]
+        public int cast_id;
+        [DataMember]
+        public string character;
+        [DataMember]
+        public string credit_id;
+        [DataMember]
+        public int id;
+        [DataMember]
+        public string name;
+        [DataMember]
+        public string profile_path;
+    }
+
+    [DataContract]
+    public class MovieCredits
+    {
+        [DataMember]
+        public int id;
+        [DataMember]
+        public List<MovieCredits_Cast> cast;
+    }
+
+    [DataContract]
     public class ActorMoviesByID
     {
         [DataMember]

@@ -23,6 +23,17 @@ namespace MovieLapsusTest
         }
 
         [TestMethod]
+        public async Task Test_SearchForMovie_List()
+        {
+            var api = new MovieLapsus.TMDB.TMDBQueries();
+
+            string ret = await api.SearchForMovie("fight");
+
+            Assert.IsTrue(ret.Contains(""));
+            Assert.IsTrue(ret.Contains(""));
+        }
+
+        [TestMethod]
         public async Task Test_SearchForActor_ID()
         {
             var api = new MovieLapsus.TMDB.TMDBQueries();
@@ -93,6 +104,20 @@ namespace MovieLapsusTest
             Assert.IsTrue(ret.Contains("popularity"));
         }
 
+        [TestMethod]
+        public async Task Test_MovieCreditsFromID()
+        {
+            var api = new MovieLapsus.TMDB.TMDBQueries();
+
+            string ret = await api.GetMovieCreditsFromID(PULP_FICTION_ID);
+
+            Assert.IsTrue(ret.Contains("\"id\""));
+            Assert.IsTrue(ret.Contains("\"cast\""));
+            Assert.IsTrue(ret.Contains("\"cast_id\""));
+            Assert.IsTrue(ret.Contains("\"character\""));
+            Assert.IsTrue(ret.Contains("\"profile_path\""));
+            Assert.IsTrue(ret.Contains("\"crew\""));
+        }
         [TestMethod]
         public async Task Test_GetMovieImages()
         {

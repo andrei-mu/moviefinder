@@ -35,7 +35,6 @@ namespace MovieLapsusTest
             Assert.AreEqual(actorBio.id, BRAD_PITT_ID_INT);
             Assert.AreEqual(actorBio.imdb_id, "nm0000093");
             Assert.AreEqual(actorBio.name, "Brad Pitt");
-            Assert.AreEqual(actorBio.profile_path, "/2xrLcP4YRakx8aAc2jdwRbctr0Y.jpg");
         }
 
         [TestMethod]
@@ -49,6 +48,32 @@ namespace MovieLapsusTest
             Assert.AreEqual(movieDesc.original_title, "Pulp Fiction");
             Assert.AreEqual(movieDesc.poster_path, "/dM2w364MScsjFf8pfMbaWUcWrR.jpg");
             Assert.AreEqual(movieDesc.release_date, "1994-10-14");
+        }
+
+        [TestMethod]
+        public async Task Test_GetMovieCredits()
+        {
+            var movieCredits = await api.GetMovieCreditsFromID(PULP_FICTION_ID_INT.ToString());
+
+            Assert.AreEqual(movieCredits.id, PULP_FICTION_ID_INT);
+
+            {
+                MovieLapsus.MovieCredits_Cast actorInfo = (
+                from ai in movieCredits.cast
+                where ai.cast_id == 1
+                select ai).First();
+
+                Assert.AreEqual(actorInfo.name, "Bruce Willis");
+            }
+
+            {
+                MovieLapsus.MovieCredits_Cast actorInfo = (
+                from ai in movieCredits.cast
+                where ai.character == "Marsellus Wallace"
+                select ai).First();
+
+                Assert.AreEqual(actorInfo.name, "Ving Rhames");
+            }
         }
 
         [TestMethod]

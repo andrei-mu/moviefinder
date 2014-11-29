@@ -19,7 +19,9 @@ namespace MovieLapsus
             private static string ACTOR_IMAGES = "http://api.themoviedb.org/3/person/{ACTOR_ID}/images?api_key={APIKEY}";
 
             private static string MOVIE_DESC = "http://api.themoviedb.org/3/movie/{MOVIE_ID}?api_key={APIKEY}";
+            private static string MOVIE_CREDITS = "http://api.themoviedb.org/3/movie/{MOVIE_ID}/credits?api_key={APIKEY}";
             private static string MOVIE_IMAGES = "http://api.themoviedb.org/3/movie/{MOVIE_ID}/images?api_key={APIKEY}";
+            private static string SEARCH_MOVIE_QUERY = "http://api.themoviedb.org/3/search/movie?api_key={APIKEY}&search_type=ngram&query={MOVIE_NAME}";
 
             private static string SEARCH_ACTOR_QUERY = "http://api.themoviedb.org/3/search/person?api_key={APIKEY}&query={ACTOR_NAME}";
             private static string CONFIG = "http://api.themoviedb.org/3/configuration?api_key={APIKEY}";
@@ -29,6 +31,14 @@ namespace MovieLapsus
                 get
                 {
                     return SEARCH_ACTOR_QUERY;
+                }
+            }
+
+            private string MovieSearchQuery
+            {
+                get
+                {
+                    return SEARCH_MOVIE_QUERY;
                 }
             }
 
@@ -61,6 +71,14 @@ namespace MovieLapsus
                 get
                 {
                     return MOVIE_DESC;
+                }
+            }
+
+            private string MovieCreaditsQuery
+            {
+                get
+                {
+                    return MOVIE_CREDITS;
                 }
             }
 
@@ -135,6 +153,15 @@ namespace MovieLapsus
                 return response;
             }
 
+            public async Task<string> SearchForMovie(string movieName)
+            {
+                movieName = movieName.Replace(" ", "+");
+                string query = MovieSearchQuery.Replace("{MOVIE_NAME}", movieName);
+
+                string response = await this.GenericHTTPQuery(query);
+                return response;
+            }
+
             public async Task<string> GetActorBiographyFromID(string actorID)
             {
                 actorID = actorID.Replace(" ", "+");
@@ -171,6 +198,14 @@ namespace MovieLapsus
             public async Task<string> GetMovieDescriptionFromID(string movieID)
             {
                 string query = MovieDescQuery.Replace("{MOVIE_ID}", movieID);
+
+                string response = await this.GenericHTTPQuery(query);
+                return response;
+            }
+
+            public async Task<string> GetMovieCreditsFromID(string movieID)
+            {
+                string query = MovieCreaditsQuery.Replace("{MOVIE_ID}", movieID);
 
                 string response = await this.GenericHTTPQuery(query);
                 return response;
