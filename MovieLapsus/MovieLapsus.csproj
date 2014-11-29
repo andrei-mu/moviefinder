@@ -87,7 +87,7 @@
     <PRIResource Include="Strings\en-US\Resources.resw" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Actor.cs" />
+    <Compile Include="TMDB\TMDB_Actor.cs" />
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
@@ -99,15 +99,16 @@
     <Compile Include="Common\ObservableDictionary.cs" />
     <Compile Include="Common\RelayCommand.cs" />
     <Compile Include="Common\SuspensionManager.cs" />
-    <Compile Include="IMovieDB_API_RAW.cs" />
+    <Compile Include="TMDB\IMovieDB_API_RAW.cs" />
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Movie.cs" />
+    <Compile Include="TMDB\TMDB_Character.cs" />
+    <Compile Include="TMDB\TMDB_Movie.cs" />
     <Compile Include="MovieList.cs" />
-    <Compile Include="TMDBAPI.cs" />
-    <Compile Include="TMDBQueries.cs" />
-    <Compile Include="TMDBStructures.cs" />
+    <Compile Include="TMDB\TMDBAPI.cs" />
+    <Compile Include="TMDB\TMDBQueries.cs" />
+    <Compile Include="TMDB\TMDBStructures.cs" />
     <Compile Include="MovieListPage.xaml.cs">
       <DependentUpon>MovieListPage.xaml</DependentUpon>
     </Compile>
