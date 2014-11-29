@@ -16,6 +16,8 @@ namespace MovieLapsusTest
 
         private static int PULP_FICTION_ID_INT = 680;
 
+        private static int AVATAR_ID_INT = 19995;
+
         private MovieLapsus.TMDB.TMDBQueries queries;
         private MovieLapsus.TMDB.TMDBAPI api;
 
@@ -77,7 +79,7 @@ namespace MovieLapsusTest
         }
 
         [TestMethod]
-        public async Task Test_GetActorList()
+        public async Task Test_SearchForActor()
         {
             var actorList = await api.SearchForActor("pitt");
 
@@ -92,7 +94,7 @@ namespace MovieLapsusTest
         }
 
         [TestMethod]
-        public async Task Test_GetActorList_BradPitt()
+        public async Task Test_SearchForActor_BradPitt()
         {
             var actorList = await api.SearchForActor("brad pitt");
 
@@ -104,6 +106,19 @@ namespace MovieLapsusTest
                         from ai in actorList.results
                         where ai.name == "Brad Pitt"
                         select ai).First();
+        }
+
+        [TestMethod]
+        public async Task Test_SearchForMovie()
+        {
+            var movieList = await api.SearchForMovie("avatar", true);
+
+            var actorInfo = (
+                        from ai in movieList.results
+                        orderby ai.popularity descending
+                        select ai).First();
+
+            Assert.AreEqual(actorInfo.id, AVATAR_ID_INT);
         }
 
         [TestMethod]

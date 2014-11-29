@@ -21,7 +21,7 @@ namespace MovieLapsus
             private static string MOVIE_DESC = "http://api.themoviedb.org/3/movie/{MOVIE_ID}?api_key={APIKEY}";
             private static string MOVIE_CREDITS = "http://api.themoviedb.org/3/movie/{MOVIE_ID}/credits?api_key={APIKEY}";
             private static string MOVIE_IMAGES = "http://api.themoviedb.org/3/movie/{MOVIE_ID}/images?api_key={APIKEY}";
-            private static string SEARCH_MOVIE_QUERY = "http://api.themoviedb.org/3/search/movie?api_key={APIKEY}&search_type=ngram&query={MOVIE_NAME}";
+            private static string SEARCH_MOVIE_QUERY = "http://api.themoviedb.org/3/search/movie?api_key={APIKEY}&query={MOVIE_NAME}";
 
             private static string SEARCH_ACTOR_QUERY = "http://api.themoviedb.org/3/search/person?api_key={APIKEY}&query={ACTOR_NAME}";
             private static string CONFIG = "http://api.themoviedb.org/3/configuration?api_key={APIKEY}";
@@ -153,10 +153,12 @@ namespace MovieLapsus
                 return response;
             }
 
-            public async Task<string> SearchForMovie(string movieName)
+            public async Task<string> SearchForMovie(string movieName, bool autoComplete)
             {
                 movieName = movieName.Replace(" ", "+");
                 string query = MovieSearchQuery.Replace("{MOVIE_NAME}", movieName);
+                if (autoComplete)
+                    query += "&search_type=ngram";
 
                 string response = await this.GenericHTTPQuery(query);
                 return response;
