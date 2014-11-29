@@ -8,20 +8,20 @@ namespace MovieLapsus
 {
     namespace ACMOV
     {
-        public class Actor
+        public class TMDB_Actor
         {
-            private static Dictionary<string, Actor> _actorCache = new Dictionary<string, Actor>();
+            private static Dictionary<string, TMDB_Actor> _actorCache = new Dictionary<string, TMDB_Actor>();
 
             public static void ClearCache()
             {
                 _actorCache.Clear();
             }
 
-            public static async Task<Actor> GetActorFromID(string id, MovieLapsus.TMDB.TMDBAPI api)
+            public static async Task<TMDB_Actor> GetActorFromID(string id, MovieLapsus.TMDB.TMDBAPI api)
             {
                 try
                 {
-                    Actor actor = _actorCache[id];
+                    TMDB_Actor actor = _actorCache[id];
 
                     return actor;
                 }
@@ -30,7 +30,7 @@ namespace MovieLapsus
 
                 }
 
-                Actor act = new Actor(id);
+                TMDB_Actor act = new TMDB_Actor(id);
                 _actorCache[id] = act;
                 await act.Load(api);
 
@@ -42,7 +42,7 @@ namespace MovieLapsus
             public string ImdbID { get; private set; }
             public string PictureURL { get; private set; }
 
-            private Actor(string id)
+            private TMDB_Actor(string id)
             {
                 ID = id;
             }

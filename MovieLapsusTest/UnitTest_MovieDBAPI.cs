@@ -66,6 +66,7 @@ namespace MovieLapsusTest
                 select ai).First();
 
                 Assert.AreEqual(actorInfo.name, "Bruce Willis");
+                Assert.AreEqual(actorInfo.id, 62);
             }
 
             {
@@ -75,6 +76,7 @@ namespace MovieLapsusTest
                 select ai).First();
 
                 Assert.AreEqual(actorInfo.name, "Ving Rhames");
+                Assert.AreEqual(actorInfo.id, 10182);
             }
         }
 
