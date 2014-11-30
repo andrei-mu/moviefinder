@@ -31,16 +31,46 @@ namespace MovieLapsusTest
         }
         
         [TestMethod]
-        public async Task Test_GetNameNotExisting()
+        public async Task Test_ActorFromID()
         {
             var actor = await MovieLapsus.ACMOV.TMDB_Actor.GetActorFromID(BRAD_PITT_ID, api);
 
             Assert.AreEqual(actor.ID, BRAD_PITT_ID);
             Assert.AreEqual(actor.Name, "Brad Pitt");
-
-            return;
         }
 
+        [TestMethod]
+        public async Task Test_ActorFromName()
+        {
+            var actor = await MovieLapsus.ACMOV.TMDB_Actor.GetActorFromString("brad pitt", api);
+
+            Assert.AreEqual(actor.ID, BRAD_PITT_ID);
+            Assert.AreEqual(actor.Name, "Brad Pitt");
+        }
+
+        [TestMethod]
+        public async Task Test_ActorMovies()
+        {
+            var actor = await MovieLapsus.ACMOV.TMDB_Actor.GetActorFromID(BRAD_PITT_ID, api);
+
+            await actor.LoadCharacters(api);
+
+            {
+                var character = (
+                    from ch in actor.Characters
+                    where ch.MovieId == "16869"
+                    select ch).First();
+
+                Assert.IsNotNull(character);
+                Assert.AreEqual(character.ActorId, BRAD_PITT_ID.ToString());
+                Assert.AreEqual(character.ActorName, "Brad Pitt");
+                Assert.AreEqual(character.CharacterName, "Lt. Aldo Raine");
+
+                Assert.AreEqual(character.MovieId, "16869");
+                Assert.AreEqual(character.MovieName, "Inglourious Basterds");
+            }
+        }
+        
         [TestMethod]
         public async Task Test_MovieFromID()
         {
@@ -72,25 +102,31 @@ namespace MovieLapsusTest
             {
                 var character = (
                     from ch in movie.Characters
-                    where ch.CastId == 1
+                    where ch.CastId == "1"
                     select ch).First();
 
                 Assert.IsNotNull(character);
-                Assert.AreEqual(character.ActorId, 62);
-                Assert.AreEqual(character.Name, "Bruce Willis");
-                Assert.AreEqual(character.Character, "Butch Coolidge");
+                Assert.AreEqual(character.ActorId, "62");
+                Assert.AreEqual(character.ActorName, "Bruce Willis");
+                Assert.AreEqual(character.CharacterName, "Butch Coolidge");
+
+                Assert.AreEqual(character.MovieId, PULP_FICTION_ID.ToString());
+                Assert.AreEqual(character.MovieName, "Pulp Fiction");
             }
 
             {
                 var character = (
                     from ch in movie.Characters
-                    where ch.CastId == 2
+                    where ch.CastId == "2"
                     select ch).First();
 
                 Assert.IsNotNull(character);
-                Assert.AreEqual(character.ActorId, 8891);
-                Assert.AreEqual(character.Name, "John Travolta");
-                Assert.AreEqual(character.Character, "Vincent Vega");
+                Assert.AreEqual(character.ActorId, "8891");
+                Assert.AreEqual(character.ActorName, "John Travolta");
+                Assert.AreEqual(character.CharacterName, "Vincent Vega");
+
+                Assert.AreEqual(character.MovieId, PULP_FICTION_ID.ToString());
+                Assert.AreEqual(character.MovieName, "Pulp Fiction");
             } 
         }
     }

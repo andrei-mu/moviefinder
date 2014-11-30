@@ -86,10 +86,14 @@ namespace MovieLapsus
                 {
                     var newChar = TMDB_Character.CreateCharacter(cast.id);
 
-                    newChar.Name = cast.name;
-                    newChar.CastId = cast.cast_id;
-                    newChar.Character = cast.character;
-                    newChar.ImagePath = api.MakeActorPosterPath(cast.profile_path);
+                    newChar.CastId = cast.cast_id.ToString();
+                    newChar.CharacterName = cast.character;
+                    newChar.ActorName = cast.name;
+                    newChar.ActorImage = api.MakeActorPosterPath(cast.profile_path);
+
+                    newChar.MovieId = this.ID;
+                    newChar.MovieName = this.Name;
+                    newChar.MovieImage = this.PictureURL;
 
                     Characters.Add(newChar);
                 }
