@@ -125,6 +125,15 @@ namespace MovieLapsus
                 searchDescTB.Text = ResLoader.GetString("SearchDesc4Movie");
             }
 
+            if (autoSuggest1.Tag == null)
+            {
+                SetEmptySuggestBox(autoSuggest1);
+            }
+            if (autoSuggest2.Tag == null)
+            {
+                SetEmptySuggestBox(autoSuggest2);
+            }
+
             Windows.Phone.UI.Input.HardwareButtons.BackPressed += HardwareButtons_BackPressed;
 
             base.OnNavigatedTo(e);
@@ -137,32 +146,66 @@ namespace MovieLapsus
                 commonMovies.Text = "Unknown actor(s) selected!";
                 return;
             }
-            string id1 = autoSuggest1.Tag.ToString();
-            string id2 = autoSuggest2.Tag.ToString();
 
-            var actorInfo1 = await dbApi.GetActorMoviesFromID(id1);
-            var actorInfo2 = await dbApi.GetActorMoviesFromID(id2);
-
-            var commonList = from mov1 in actorInfo1.cast
-                             join mov2 in actorInfo2.cast on mov1.id equals mov2.id
-                             select mov1;
-
-            var c = commonList.Count();
-
-            StringBuilder sb = new StringBuilder();
-            sb.AppendLine("Found " + c.ToString() + " movies:");
-            foreach (MovieInfoByID_Cast ai in commonList)
+            if (SearchForMovie)
             {
-                System.Diagnostics.Debug.WriteLine(ai.original_title);
-                sb.AppendLine("  - " + ai.original_title);
-            }
-            commonMovies.Text = sb.ToString();
+                string id1 = autoSuggest1.Tag.ToString();
+                string id2 = autoSuggest2.Tag.ToString();
 
-            foreach (var movie in commonList)
-            {
-                movie.poster_path = dbApi.MakeMoviePosterPath(movie.poster_path);
+                var actorInfo1 = await dbApi.GetActorMoviesFromID(id1);
+                var actorInfo2 = await dbApi.GetActorMoviesFromID(id2);
+
+                var commonList = from mov1 in actorInfo1.cast
+                                 join mov2 in actorInfo2.cast on mov1.id equals mov2.id
+                                 select mov1;
+
+                var c = commonList.Count();
+
+                StringBuilder sb = new StringBuilder();
+                sb.AppendLine("Found " + c.ToString() + " movies:");
+                foreach (MovieInfoByID_Cast ai in commonList)
+                {
+                    System.Diagnostics.Debug.WriteLine(ai.original_title);
+                    sb.AppendLine("  - " + ai.original_title);
+                }
+                commonMovies.Text = sb.ToString();
+
+                foreach (var movie in commonList)
+                {
+                    movie.poster_path = dbApi.MakeMoviePosterPath(movie.poster_path);
+                }
+                Frame.Navigate(typeof(MovieListPage), commonList);
             }
-            Frame.Navigate(typeof(MovieListPage), commonList);
+            else
+            {
+                string id1 = autoSuggest1.Tag.ToString();
+                string id2 = autoSuggest2.Tag.ToString();
+
+                var list1 = await dbApi.GetMovieCreditsFromID(id1);
+                var list2 = await dbApi.GetMovieCreditsFromID(id2);
+
+                var commonList = from mov1 in list1.cast
+                                 join mov2 in list2.cast on mov1.id equals mov2.id
+                                 select mov1;
+
+                var c = commonList.Count();
+
+                StringBuilder sb = new StringBuilder();
+                sb.AppendLine("Found " + c.ToString() + " actors:");
+
+                foreach (var ai in commonList)
+                {
+                    System.Diagnostics.Debug.WriteLine(ai.name);
+                    sb.AppendLine("  - " + ai.name);
+                }
+                commonMovies.Text = sb.ToString();
+
+                //foreach (var movie in commonList)
+                //{
+                //    movie.poster_path = dbApi.MakeMoviePosterPath(movie.poster_path);
+                //}
+                //Frame.Navigate(typeof(MovieListPage), commonList);
+            }
         }
 
         private async void OnSuggestBoxTextChanged(AutoSuggestBox sender, AutoSuggestBoxTextChangedEventArgs args)
@@ -172,10 +215,22 @@ namespace MovieLapsus
                 return;
             }
 
+            if (SearchForActor)
+            {
+                await AutoCompleteMovie(sender);
+            }
+            else
+            {
+                await AutoCompleteActor(sender);
+            }
+        }
+
+        private async System.Threading.Tasks.Task AutoCompleteActor(AutoSuggestBox sender)
+        {
             sender.Tag = null;
             if (sender.Text.Length <= 2)
             {
-                sender.ItemsSource = new string[] {};
+                sender.ItemsSource = new string[] { };
                 return;
             }
 
@@ -183,25 +238,66 @@ namespace MovieLapsus
             if (searchInfo.results.Count == 0)
                 return;
 
-            var suggestedActors = (from result in searchInfo.results
-                                    select result).Take(7);
+            var suggestions = (from result in searchInfo.results
+                                   select result).Take(7);
 
-            sender.ItemsSource = suggestedActors;
+            sender.ItemsSource = suggestions;
+        }
+
+        private async System.Threading.Tasks.Task AutoCompleteMovie(AutoSuggestBox sender)
+        {
+            sender.Tag = null;
+            if (sender.Text.Length <= 3)
+            {
+                sender.ItemsSource = new string[] { };
+                return;
+            }
+
+            var searchInfo = await dbApi.SearchForMovie(sender.Text, true);
+            if (searchInfo.results.Count == 0)
+                return;
+
+            var suggestions = (from result in searchInfo.results
+                                   select result).Take(7);
+
+            sender.ItemsSource = suggestions;
         }
 
         private async void OnSuggestionChosen(AutoSuggestBox sender, AutoSuggestBoxSuggestionChosenEventArgs args)
         {
-            var selection = args.SelectedItem as SearchActor_ActorInfo;
+            await dbApi.GetConfiguration();
 
-            if (selection != null)
+            if (SearchForMovie)
             {
-                sender.Tag = selection.id.ToString();
+                var selection = args.SelectedItem as SearchActor_ActorInfo;
+
+                if (selection != null)
+                {
+                    sender.Tag = selection.id.ToString();
+                }
+
+                string path = await dbApi.GetActorImageFromID(selection.id.ToString());
+
+                BitmapImage src = new BitmapImage(new Uri(path));
+                actorImg.Source = src;
+            }
+            else
+            {
+                var selection = args.SelectedItem as SearchMovie_Result;
+                
+
+                if (selection != null)
+                {
+                    sender.Tag = selection.id.ToString();
+                }
+
+                var desc = await dbApi.GetMovieDescriptionFromID(selection.id.ToString());
+
+                BitmapImage src = new BitmapImage(new Uri(dbApi.MakeMoviePosterPath(desc.poster_path)));
+                actorImg.Source = src;
             }
 
-            string path = await dbApi.GetActorImageFromID(selection.id.ToString());
-
-            BitmapImage src = new BitmapImage(new Uri(path));
-            actorImg.Source = src;
+            this.searchBtn.Focus(FocusState.Programmatic);
             return;
         }
 
@@ -230,7 +326,11 @@ namespace MovieLapsus
 
         private void SetEmptySuggestBox(AutoSuggestBox suggestBox)
         {
-            var str = ResLoader.GetString("empty_actor_name");
+            string str = ResLoader.GetString("empty_actor_name");
+            if (SearchForActor)
+            {
+                str = ResLoader.GetString("empty_movie_name");
+            }
 
             suggestBox.Tag = null;
             suggestBox.Text = str;

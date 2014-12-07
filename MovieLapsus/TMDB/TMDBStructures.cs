@@ -118,6 +118,11 @@ namespace MovieLapsus
         public float popularity;
         [DataMember]
         public string title;
+
+        public override string ToString()
+        {
+            return title;
+        }
     }
 
     [DataContract]

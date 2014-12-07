@@ -63,10 +63,12 @@
                             FontStyle="Italic" FontWeight="Thin"/>
 
             <Image x:Name="actorImg" Height="100" NineGrid="1"/>
-            <Button Content="Search"
-        		HorizontalAlignment="Stretch"
-                Margin="10, 20, 10, 20"
-        		VerticalAlignment="Stretch" Click="OnSearchClicked"/>
+            <Button x:Name="searchBtn"
+                    Content="Search"
+                    HorizontalAlignment="Stretch"
+                    Margin="10, 20, 10, 20"
+                    VerticalAlignment="Stretch"
+                    Click="OnSearchClicked"/>
             <TextBlock x:Name="commonMovies"
         		TextWrapping="Wrap"
         		Text=""
