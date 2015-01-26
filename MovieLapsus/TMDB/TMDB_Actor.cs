@@ -93,7 +93,7 @@ namespace MovieLapsus
                     character.CharacterName = role.character;
                     character.MovieId = role.id.ToString();
                     character.MovieImage = role.poster_path;
-                    character.MovieName = role.title;
+                    character.MovieName = role.original_title;
 
                     Characters.Add(character);
                 }

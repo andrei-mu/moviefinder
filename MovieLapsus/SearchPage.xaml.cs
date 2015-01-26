@@ -39,7 +39,7 @@ namespace MovieLapsus
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
-    public sealed partial class MainPage : Page
+    public sealed partial class SearchPage : Page
     {
         private TMDB.TMDBQueries dbQueries = null;
         private TMDB.TMDBAPI dbApi = null;
@@ -75,7 +75,7 @@ namespace MovieLapsus
             }
         }
 
-        public MainPage()
+        public SearchPage()
         {
             this.InitializeComponent();
 
@@ -149,32 +149,14 @@ namespace MovieLapsus
 
             if (SearchForMovie)
             {
+                var calc = new CommonCalculator(dbApi);
+
+                
                 string id1 = autoSuggest1.Tag.ToString();
                 string id2 = autoSuggest2.Tag.ToString();
+                var list = await calc.CalculateCommonMovies(id1, id2);
 
-                var actorInfo1 = await dbApi.GetActorMoviesFromID(id1);
-                var actorInfo2 = await dbApi.GetActorMoviesFromID(id2);
-
-                var commonList = from mov1 in actorInfo1.cast
-                                 join mov2 in actorInfo2.cast on mov1.id equals mov2.id
-                                 select mov1;
-
-                var c = commonList.Count();
-
-                StringBuilder sb = new StringBuilder();
-                sb.AppendLine("Found " + c.ToString() + " movies:");
-                foreach (MovieInfoByID_Cast ai in commonList)
-                {
-                    System.Diagnostics.Debug.WriteLine(ai.original_title);
-                    sb.AppendLine("  - " + ai.original_title);
-                }
-                commonMovies.Text = sb.ToString();
-
-                foreach (var movie in commonList)
-                {
-                    movie.poster_path = dbApi.MakeMoviePosterPath(movie.poster_path);
-                }
-                Frame.Navigate(typeof(MovieListPage), commonList);
+                Frame.Navigate(typeof(ResultsListPage), list);
             }
             else
             {

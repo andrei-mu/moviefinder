@@ -162,11 +162,45 @@ namespace MovieLapsus
         [DataMember]
         public string original_title;
         [DataMember]
+        public string original_name;
+        [DataMember]
         public string poster_path;
         [DataMember]
         public string release_date;
         [DataMember]
-        public string title;
+        public string media_type;
+
+        public string Name()
+        {
+            if (media_type == "tv")
+            {
+                return original_name;
+            }
+
+            return original_title;
+        }
+
+        public string Description()
+        {
+            DateTime dt;
+            if (DateTime.TryParse(release_date, out dt))
+            {
+                string date = dt.ToString("D");
+                return date;
+            }
+
+            return "";
+        }
+
+        public string ImageUrl()
+        {
+            return poster_path;
+        }
+
+        public string ID()
+        {
+            return id.ToString();
+        }
     }
 
     [DataContract]

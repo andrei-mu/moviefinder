@@ -87,35 +87,33 @@
     <PRIResource Include="Strings\en-US\Resources.resw" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CommonMoviesCalculator.cs" />
+    <Compile Include="IResultsListItem.cs" />
     <Compile Include="TMDB\TMDB_Actor.cs" />
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="DataModel\SampleDataSource.cs" />
-    <Compile Include="IntroPage.xaml.cs">
-      <DependentUpon>IntroPage.xaml</DependentUpon>
+    <Compile Include="WhatToSearchPage.xaml.cs">
+      <DependentUpon>WhatToSearchPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Common\NavigationHelper.cs" />
     <Compile Include="Common\ObservableDictionary.cs" />
     <Compile Include="Common\RelayCommand.cs" />
     <Compile Include="Common\SuspensionManager.cs" />
     <Compile Include="TMDB\IMovieDB_API_RAW.cs" />
-    <Compile Include="MainPage.xaml.cs">
-      <DependentUpon>MainPage.xaml</DependentUpon>
+    <Compile Include="SearchPage.xaml.cs">
+      <DependentUpon>SearchPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="TMDB\TMDB_Character.cs" />
     <Compile Include="TMDB\TMDB_Movie.cs" />
-    <Compile Include="MovieList.cs" />
     <Compile Include="TMDB\TMDBAPI.cs" />
     <Compile Include="TMDB\TMDBQueries.cs" />
     <Compile Include="TMDB\TMDBStructures.cs" />
-    <Compile Include="MovieListPage.xaml.cs">
-      <DependentUpon>MovieListPage.xaml</DependentUpon>
+    <Compile Include="ResultsListPage.xaml.cs">
+      <DependentUpon>ResultsListPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ResultsPage.xaml.cs">
-      <DependentUpon>ResultsPage.xaml</DependentUpon>
-    </Compile>
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest">
@@ -138,19 +136,15 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Page Include="IntroPage.xaml">
+    <Page Include="WhatToSearchPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="MainPage.xaml">
+    <Page Include="SearchPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="MovieListPage.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="ResultsPage.xaml">
+    <Page Include="ResultsListPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
