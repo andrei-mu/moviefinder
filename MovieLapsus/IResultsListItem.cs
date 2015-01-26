@@ -6,7 +6,14 @@ using System.Threading.Tasks;
 
 namespace MovieLapsus
 {
-    class MovieList
+    public interface IResultsListItem
     {
+        string ItemName();
+
+        string ItemDescription();
+
+        string ItemImageUrl();
+
+        string ItemID();
     }
 }

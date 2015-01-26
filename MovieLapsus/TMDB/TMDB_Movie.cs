@@ -8,7 +8,7 @@ namespace MovieLapsus
 {
     namespace ACMOV
     {
-        public class TMDB_Movie
+        public class TMDB_Movie : IResultsListItem
         {
             private static Dictionary<string, TMDB_Movie> _movieCache = new Dictionary<string, TMDB_Movie>();
 
@@ -19,19 +19,15 @@ namespace MovieLapsus
 
             public static async Task<TMDB_Movie> GetMovieFromID(string id, MovieLapsus.TMDB.TMDBAPI api)
             {
-                try
+                if (_movieCache.ContainsKey(id))
                 {
                     TMDB_Movie item = _movieCache[id];
 
                     return item;
                 }
-                catch (Exception)
-                {
-
-                }
 
                 TMDB_Movie newItem = new TMDB_Movie(id);
-                _movieCache[id] = newItem;
+                _movieCache.Add(id, newItem);
                 await newItem.Load(api);
 
                 return newItem;
@@ -69,7 +65,7 @@ namespace MovieLapsus
                 this.Name = movieDesc.original_title;
                 this.Popularity = movieDesc.popularity;
                 this.ImdbID = movieDesc.imdb_id;
-                this.PictureURL = movieDesc.poster_path;
+                this.PictureURL = api.MakeMoviePosterPath(movieDesc.poster_path);
                 this.ReleaseDate = movieDesc.release_date;
             }
 
@@ -97,6 +93,37 @@ namespace MovieLapsus
 
                     Characters.Add(newChar);
                 }
+            }
+
+            public string ItemName()
+            {
+                return Name;
+            }
+
+            public string ItemDescription()
+            {
+                return ReleaseDate;
+
+                /*
+                            DateTime dt;
+            if (DateTime.TryParse(release_date, out dt))
+            {
+                string date = dt.ToString("D");
+                return date;
+            }
+
+            return ""; 
+                 * */
+            }
+
+            public string ItemImageUrl()
+            {
+                return PictureURL;
+            }
+
+            public string ItemID()
+            {
+                return ID;
             }
         }
     }

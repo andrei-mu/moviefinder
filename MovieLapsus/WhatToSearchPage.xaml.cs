@@ -23,12 +23,12 @@ namespace MovieLapsus
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
-    public sealed partial class IntroPage : Page
+    public sealed partial class WhatToSearchPage : Page
     {
         private NavigationHelper navigationHelper;
         private ObservableDictionary defaultViewModel = new ObservableDictionary();
 
-        public IntroPage()
+        public WhatToSearchPage()
         {
             this.InitializeComponent();
 
@@ -114,11 +114,11 @@ namespace MovieLapsus
 
             if (btn.Name == this.searchActorBtn.Name)
             {
-                Frame.Navigate(typeof(MainPage), "actor");
+                Frame.Navigate(typeof(SearchPage), "actor");
             }
             else if (btn.Name == this.searchMovieBtn.Name)
             {
-                Frame.Navigate(typeof(MainPage), "movie");
+                Frame.Navigate(typeof(SearchPage), "movie");
             }
         }
     }
