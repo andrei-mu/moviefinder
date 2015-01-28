@@ -8,7 +8,7 @@ namespace MovieLapsus
 {
     namespace ACMOV
     {
-        public class TMDB_Actor
+        public class TMDB_Actor : IResultsListItem
         {
             private static Dictionary<string, TMDB_Actor> _actorCache = new Dictionary<string, TMDB_Actor>();
 
@@ -19,15 +19,11 @@ namespace MovieLapsus
 
             public static async Task<TMDB_Actor> GetActorFromID(string id, MovieLapsus.TMDB.TMDBAPI api)
             {
-                try
+                if (_actorCache.ContainsKey(id))
                 {
                     TMDB_Actor actor = _actorCache[id];
 
                     return actor;
-                }
-                catch(Exception)
-                {
-
                 }
 
                 TMDB_Actor act = new TMDB_Actor(id);
@@ -53,6 +49,32 @@ namespace MovieLapsus
             public string PictureURL { get; private set; }
             public string Birthday { get; private set; }
             public float Popularity { get; private set; }
+
+            public string ItemName()
+            {
+                return Name;
+            }
+
+            public string ItemDescription()
+            {
+                return Birthday;
+            }
+
+            public string ItemImageUrl()
+            {
+                return PictureURL;
+            }
+
+            public string ItemID()
+            {
+                return ID;
+            }
+
+            public float ItemPriority()
+            {
+                return Popularity;
+            }
+
 
             public List<TMDB_Character> Characters { get; private set; }
 
