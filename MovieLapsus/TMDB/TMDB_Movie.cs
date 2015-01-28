@@ -125,6 +125,19 @@ namespace MovieLapsus
             {
                 return ID;
             }
+
+            public float ItemPriority()
+            {
+                DateTime dt;
+                if (DateTime.TryParse(ReleaseDate, out dt))
+                {
+                    float rating = (float)(dt.DayOfYear + dt.Year * 400);
+
+                    return rating;
+                }
+
+                return 0.0f;
+            }
         }
     }
 }

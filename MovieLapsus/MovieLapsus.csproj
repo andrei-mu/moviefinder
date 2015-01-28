@@ -87,7 +87,7 @@
     <PRIResource Include="Strings\en-US\Resources.resw" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CommonMoviesCalculator.cs" />
+    <Compile Include="CommonCalculator.cs" />
     <Compile Include="IResultsListItem.cs" />
     <Compile Include="TMDB\TMDB_Actor.cs" />
     <Compile Include="App.xaml.cs">
