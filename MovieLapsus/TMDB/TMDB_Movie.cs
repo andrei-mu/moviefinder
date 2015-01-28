@@ -103,17 +103,6 @@ namespace MovieLapsus
             public string ItemDescription()
             {
                 return ReleaseDate;
-
-                /*
-                            DateTime dt;
-            if (DateTime.TryParse(release_date, out dt))
-            {
-                string date = dt.ToString("D");
-                return date;
-            }
-
-            return ""; 
-                 * */
             }
 
             public string ItemImageUrl()

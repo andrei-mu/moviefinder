@@ -147,46 +147,21 @@ namespace MovieLapsus
                 return;
             }
 
+            var calc = new CommonCalculator(dbApi);
+            string id1 = autoSuggest1.Tag.ToString();
+            string id2 = autoSuggest2.Tag.ToString();
+
             if (SearchForMovie)
             {
-                var calc = new CommonCalculator(dbApi);
-
-                
-                string id1 = autoSuggest1.Tag.ToString();
-                string id2 = autoSuggest2.Tag.ToString();
                 var list = await calc.CalculateCommonMovies(id1, id2);
 
                 Frame.Navigate(typeof(ResultsListPage), list);
             }
             else
             {
-                string id1 = autoSuggest1.Tag.ToString();
-                string id2 = autoSuggest2.Tag.ToString();
+                var list = await calc.CalculateCommonActors(id1, id2);
 
-                var list1 = await dbApi.GetMovieCreditsFromID(id1);
-                var list2 = await dbApi.GetMovieCreditsFromID(id2);
-
-                var commonList = from mov1 in list1.cast
-                                 join mov2 in list2.cast on mov1.id equals mov2.id
-                                 select mov1;
-
-                var c = commonList.Count();
-
-                StringBuilder sb = new StringBuilder();
-                sb.AppendLine("Found " + c.ToString() + " actors:");
-
-                foreach (var ai in commonList)
-                {
-                    System.Diagnostics.Debug.WriteLine(ai.name);
-                    sb.AppendLine("  - " + ai.name);
-                }
-                commonMovies.Text = sb.ToString();
-
-                //foreach (var movie in commonList)
-                //{
-                //    movie.poster_path = dbApi.MakeMoviePosterPath(movie.poster_path);
-                //}
-                //Frame.Navigate(typeof(MovieListPage), commonList);
+                Frame.Navigate(typeof(ResultsListPage), list);
             }
         }
 
