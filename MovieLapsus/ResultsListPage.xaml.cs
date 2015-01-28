@@ -70,11 +70,11 @@ namespace MovieLapsus
 
             SampleDataGroup dataGroup = new SampleDataGroup("gogu", "titlu1", "subtitlu2", "", "desc");
 
-            var movieList = e.NavigationParameter as List<IResultsListItem>;
+            var resultItemList = e.NavigationParameter as IEnumerable<IResultsListItem>;
 
-            foreach (var movie in movieList.OrderByDescending(m => m.ItemDescription()))
+            foreach (var listItem in resultItemList)
             {
-                var listItem = movie as IResultsListItem;
+                //var listItem = movie as IResultsListItem;
                 var dataItem = new SampleDataItem(listItem.ItemID(),
                                    listItem.ItemName(),
                                    listItem.ItemDescription(),
