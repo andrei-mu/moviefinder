@@ -9,15 +9,18 @@ using System.Linq.Expressions;
 namespace MovieLapsusTest
 {
     [TestClass]
-    public class UnitTest_CommonMoviesCalculator
+    public class UnitTest_CommonCalculator
     {
         private static string BEN_STILLER_ID = "7399";
         private static string OWEN_WILSON_ID = "887";
 
+        private static string STARSKY_HUTCH_ID = "9384";
+        private static string ZOOLANDER_ID = "9398";
+
         private MovieLapsus.TMDB.TMDBQueries queries;
         private MovieLapsus.TMDB.TMDBAPI api;
 
-        UnitTest_CommonMoviesCalculator()
+        UnitTest_CommonCalculator()
         {
             queries = new MovieLapsus.TMDB.TMDBQueries();
             api = new MovieLapsus.TMDB.TMDBAPI(queries);
@@ -72,5 +75,59 @@ namespace MovieLapsusTest
 
             return;
         }
+
+        [TestMethod]
+        public async Task Test_CommonActorsSimple()
+        {
+            await api.GetConfiguration();
+            var calc = new MovieLapsus.CommonCalculator(api);
+            var result = await calc.CalculateCommonActors(STARSKY_HUTCH_ID, ZOOLANDER_ID);
+
+            Assert.AreEqual(4, result.Count());
+
+            Assert.AreEqual("7399", result.First().ItemID());
+            Assert.AreEqual("887", result.Last().ItemID());
+
+            {
+                var actor = (
+                    from ch in result
+                    where ch.ItemID() == "7399"
+                    select ch).First();
+
+                Assert.IsNotNull(actor);
+                Assert.AreEqual(actor.ItemName(), "Ben Stiller");
+            }
+
+            {
+                var actor = (
+                    from ch in result
+                    where ch.ItemID() == "887"
+                    select ch).First();
+
+                Assert.IsNotNull(actor);
+                Assert.AreEqual(actor.ItemName(), "Owen Wilson");
+            }
+
+            {
+                var actor = (
+                    from ch in result
+                    where ch.ItemID() == "4937"
+                    select ch).First();
+
+                Assert.IsNotNull(actor);
+                Assert.AreEqual(actor.ItemName(), "Vince Vaughn");
+            }
+
+            {
+                var actor = (
+                    from ch in result
+                    where ch.ItemID() == "23659"
+                    select ch).First();
+
+                Assert.IsNotNull(actor);
+                Assert.AreEqual(actor.ItemName(), "Will Ferrell");
+            }
+        }
+
     }
 }
