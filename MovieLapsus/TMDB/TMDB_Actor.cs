@@ -91,7 +91,7 @@ namespace MovieLapsus
                 this.Name = actorInfo.name;
                 this.ImdbID = actorInfo.imdb_id;
                 this.Popularity = actorInfo.popularity;
-                this.Birthday = actorInfo.biography;
+                this.Birthday = actorInfo.birthday;
 
                 await api.GetConfiguration();
                 this.PictureURL = api.MakeActorPosterPath(actorInfo.profile_path);

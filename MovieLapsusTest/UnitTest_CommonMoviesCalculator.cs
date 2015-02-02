@@ -85,7 +85,7 @@ namespace MovieLapsusTest
 
             Assert.AreEqual(4, result.Count());
 
-            Assert.AreEqual("7399", result.First().ItemID());
+            Assert.AreEqual("23659", result.First().ItemID());
             Assert.AreEqual("887", result.Last().ItemID());
 
             {
