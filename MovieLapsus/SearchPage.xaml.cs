@@ -141,15 +141,15 @@ namespace MovieLapsus
 
         private async void OnSearchClicked(object sender, RoutedEventArgs e)
         {
-            if (autoSuggest1.Tag == null || autoSuggest2.Tag == null)
+            if (autoSuggest1.Tag == null && autoSuggest2.Tag == null)
             {
                 commonMovies.Text = "Unknown actor(s) selected!";
                 return;
             }
 
             var calc = new CommonCalculator(dbApi);
-            string id1 = autoSuggest1.Tag.ToString();
-            string id2 = autoSuggest2.Tag.ToString();
+            string id1 = (autoSuggest1.Tag == null)? null : autoSuggest1.Tag.ToString();
+            string id2 = (autoSuggest2.Tag == null) ? null : autoSuggest2.Tag.ToString();
 
             if (SearchForMovie)
             {
