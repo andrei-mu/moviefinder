@@ -1,18 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
+﻿using MovieLapsus.Common;
+using System;
 using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
-using System.Text;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
 using Windows.Phone.UI.Input;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Imaging;
 using Windows.UI.Xaml.Navigation;
 
@@ -41,16 +32,19 @@ namespace MovieLapsus
     /// </summary>
     public sealed partial class SearchPage : Page
     {
-        private TMDB.TMDBQueries dbQueries = null;
-        private TMDB.TMDBAPI dbApi = null;
-        private Windows.ApplicationModel.Resources.ResourceLoader resLoader = null;
-        private string searchParameter = "";
+        private readonly NavigationHelper navigationHelper;
+
+        private TMDB.TMDBQueries m_dbQueries = null;
+        private TMDB.TMDBAPI m_dbApi = null;
+        private Windows.ApplicationModel.Resources.ResourceLoader m_resLoader = null;
+        private string m_searchParameter = "";
+        private string m_oldSearchParameter = "";
 
         public bool SearchForMovie
         {
             get
             {
-                return searchParameter == "movie";
+                return m_searchParameter == "movie";
             }
         }
 
@@ -58,7 +52,7 @@ namespace MovieLapsus
         {
             get
             {
-                return searchParameter == "actor";
+                return m_searchParameter == "actor";
             }
         }
 
@@ -66,12 +60,12 @@ namespace MovieLapsus
         {
             get
             {
-                if (resLoader == null)
+                if (m_resLoader == null)
                 {
-                    resLoader = new Windows.ApplicationModel.Resources.ResourceLoader();
+                    m_resLoader = new Windows.ApplicationModel.Resources.ResourceLoader();
                 }
 
-                return resLoader;
+                return m_resLoader;
             }
         }
 
@@ -79,43 +73,40 @@ namespace MovieLapsus
         {
             this.InitializeComponent();
 
-            dbQueries = new TMDB.TMDBQueries();
-            dbApi = new TMDB.TMDBAPI(dbQueries);
+            this.navigationHelper = new NavigationHelper(this);
+            this.navigationHelper.LoadState += this.NavigationHelper_LoadState;
+            this.navigationHelper.SaveState += this.NavigationHelper_SaveState;
 
-            this.NavigationCacheMode = NavigationCacheMode.Required;
-        }
+            m_dbQueries = new TMDB.TMDBQueries();
+            m_dbApi = new TMDB.TMDBAPI(m_dbQueries);
 
-        private void HardwareButtons_BackPressed(object sender, BackPressedEventArgs e)
-        {
-            Frame frame = Window.Current.Content as Frame;
-            if (frame == null)
-            {
-                return;
-            }
-
-            if (frame.CanGoBack)
-            {
-                frame.GoBack();
-                e.Handled = true;
-            }
+            //this.NavigationCacheMode = NavigationCacheMode.Required;
         }
 
         /// <summary>
-        /// Invoked when this page is about to be displayed in a Frame.
+        /// Populates the page with content passed during navigation.  Any saved state is also
+        /// provided when recreating a page from a prior session.
         /// </summary>
-        /// <param name="e">Event data that describes how this page was reached.
-        /// This parameter is typically used to configure the page.</param>
-        protected override void OnNavigatedTo(NavigationEventArgs e)
+        /// <param name="sender">
+        /// The source of the event; typically <see cref="NavigationHelper"/>
+        /// </param>
+        /// <param name="e">Event data that provides both the navigation parameter passed to
+        /// <see cref="Frame.Navigate(Type, Object)"/> when this page was initially requested and
+        /// a dictionary of state preserved by this page during an earlier
+        /// session.  The state will be null the first time a page is visited.</param>
+        private void NavigationHelper_LoadState(object sender, LoadStateEventArgs e)
         {
-            // TODO: Prepare page for display here.
+            m_searchParameter = e.NavigationParameter.ToString();
 
-            // TODO: If your application contains multiple pages, ensure that you are
-            // handling the hardware Back button by registering for the
-            // Windows.Phone.UI.Input.HardwareButtons.BackPressed event.
-            // If you are using the NavigationHelper provided by some templates,
-            // this event is handled for you.
+            if (e.PageState != null)
+            {
+                autoSuggest1.Tag = e.PageState["t1"];
+                SetSuggestBoxText(autoSuggest1, e.PageState["n1"] as string);
+                autoSuggest2.Tag = e.PageState["t2"];
+                SetSuggestBoxText(autoSuggest2, e.PageState["n2"] as string);
+                actorImg.Source = e.PageState["url"] as BitmapImage;
+            }
 
-            searchParameter = e.Parameter.ToString();
             if (SearchForActor)
             {
                 searchDescTB.Text = ResLoader.GetString("SearchDesc4Actor");
@@ -133,11 +124,51 @@ namespace MovieLapsus
             {
                 SetEmptySuggestBox(autoSuggest2);
             }
-
-            Windows.Phone.UI.Input.HardwareButtons.BackPressed += HardwareButtons_BackPressed;
-
-            base.OnNavigatedTo(e);
         }
+
+        /// <summary>
+        /// Preserves state associated with this page in case the application is suspended or the
+        /// page is discarded from the navigation cache.  Values must conform to the serialization
+        /// requirements of <see cref="SuspensionManager.SessionState"/>.
+        /// </summary>
+        /// <param name="sender">The source of the event; typically <see cref="NavigationHelper"/></param>
+        /// <param name="e">Event data that provides an empty dictionary to be populated with
+        /// serializable state.</param>
+        private void NavigationHelper_SaveState(object sender, SaveStateEventArgs e)
+        {
+            // TODO: Save the unique state of the page here.
+            e.PageState["t1"] = autoSuggest1.Tag;
+            e.PageState["n1"] = autoSuggest1.Text;
+            e.PageState["t2"] = autoSuggest2.Tag;
+            e.PageState["n2"] = autoSuggest2.Text;
+            e.PageState["url"] = actorImg.Source;
+        }
+
+        #region NavigationHelper registration
+
+        /// <summary>
+        /// The methods provided in this section are simply used to allow
+        /// NavigationHelper to respond to the page's navigation methods.
+        /// <para>
+        /// Page specific logic should be placed in event handlers for the
+        /// <see cref="NavigationHelper.LoadState"/>
+        /// and <see cref="NavigationHelper.SaveState"/>.
+        /// The navigation parameter is available in the LoadState method
+        /// in addition to page state preserved during an earlier session.
+        /// </para>
+        /// </summary>
+        /// <param name="e">Event data that describes how this page was reached.</param>
+        protected override void OnNavigatedTo(NavigationEventArgs e)
+        {
+            this.navigationHelper.OnNavigatedTo(e);
+        }
+
+        protected override void OnNavigatedFrom(NavigationEventArgs e)
+        {
+            this.navigationHelper.OnNavigatedFrom(e);
+        }
+
+        #endregion
 
         private async void OnSearchClicked(object sender, RoutedEventArgs e)
         {
@@ -147,7 +178,7 @@ namespace MovieLapsus
                 return;
             }
 
-            var calc = new CommonCalculator(dbApi);
+            var calc = new CommonCalculator(m_dbApi);
             string id1 = (autoSuggest1.Tag == null)? null : autoSuggest1.Tag.ToString();
             string id2 = (autoSuggest2.Tag == null) ? null : autoSuggest2.Tag.ToString();
 
@@ -191,7 +222,7 @@ namespace MovieLapsus
                 return;
             }
 
-            var searchInfo = await dbApi.SearchForActor(sender.Text);
+            var searchInfo = await m_dbApi.SearchForActor(sender.Text);
             if (searchInfo.results.Count == 0)
                 return;
 
@@ -210,7 +241,7 @@ namespace MovieLapsus
                 return;
             }
 
-            var searchInfo = await dbApi.SearchForMovie(sender.Text, true);
+            var searchInfo = await m_dbApi.SearchForMovie(sender.Text, true);
             if (searchInfo.results.Count == 0)
                 return;
 
@@ -222,7 +253,7 @@ namespace MovieLapsus
 
         private async void OnSuggestionChosen(AutoSuggestBox sender, AutoSuggestBoxSuggestionChosenEventArgs args)
         {
-            await dbApi.GetConfiguration();
+            await m_dbApi.GetConfiguration();
 
             if (SearchForMovie)
             {
@@ -233,7 +264,7 @@ namespace MovieLapsus
                     sender.Tag = selection.id.ToString();
                 }
 
-                string path = await dbApi.GetActorImageFromID(selection.id.ToString());
+                string path = await m_dbApi.GetActorImageFromID(selection.id.ToString());
 
                 BitmapImage src = new BitmapImage(new Uri(path));
                 actorImg.Source = src;
@@ -248,26 +279,23 @@ namespace MovieLapsus
                     sender.Tag = selection.id.ToString();
                 }
 
-                var desc = await dbApi.GetMovieDescriptionFromID(selection.id.ToString());
+                var desc = await m_dbApi.GetMovieDescriptionFromID(selection.id.ToString());
 
-                BitmapImage src = new BitmapImage(new Uri(dbApi.MakeMoviePosterPath(desc.poster_path)));
+                BitmapImage src = new BitmapImage(new Uri(m_dbApi.MakeMoviePosterPath(desc.poster_path)));
                 actorImg.Source = src;
             }
 
             this.searchBtn.Focus(FocusState.Programmatic);
-            return;
         }
 
         private void OnGotFocus(object sender, RoutedEventArgs e)
         {
             var suggestBox = sender as AutoSuggestBox;
 
+            
             if (suggestBox.FontStyle == Windows.UI.Text.FontStyle.Italic)
             {
-                suggestBox.FontStyle = Windows.UI.Text.FontStyle.Normal;
-                suggestBox.FontWeight = Windows.UI.Text.FontWeights.Normal;
-
-                suggestBox.Text = "";
+                SetSuggestBoxText(suggestBox, "");
             }
         }
 
@@ -295,5 +323,11 @@ namespace MovieLapsus
             suggestBox.FontWeight = Windows.UI.Text.FontWeights.Light;
         }
 
+        private void SetSuggestBoxText(AutoSuggestBox suggestBox, string text)
+        {
+            suggestBox.Text = text;
+            suggestBox.FontStyle = Windows.UI.Text.FontStyle.Normal;
+            suggestBox.FontWeight = Windows.UI.Text.FontWeights.Normal;
+        }
     }
 }

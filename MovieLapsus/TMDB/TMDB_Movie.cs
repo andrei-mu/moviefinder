@@ -105,6 +105,11 @@ namespace MovieLapsus
                 return ReleaseDate;
             }
 
+            public string ItemSubtitle()
+            {
+                return "desc";
+            }
+
             public string ItemImageUrl()
             {
                 return PictureURL;

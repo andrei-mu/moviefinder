@@ -77,9 +77,9 @@ namespace MovieLapsus
                 //var listItem = movie as IResultsListItem;
                 var dataItem = new SampleDataItem(listItem.ItemID(),
                                    listItem.ItemName(),
-                                   listItem.ItemDescription(),
+                                   listItem.ItemSubtitle(),
                                    listItem.ItemImageUrl(),
-                                   "",
+                                   listItem.ItemDescription(),
                                    "");
                 dataGroup.Items.Add(dataItem);
             }
