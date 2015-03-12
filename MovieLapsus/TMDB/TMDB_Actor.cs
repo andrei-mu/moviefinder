@@ -75,6 +75,11 @@ namespace MovieLapsus
                 return Popularity;
             }
 
+            public string ItemSubtitle()
+            {
+                return Popularity.ToString();
+            }
+
 
             public List<TMDB_Character> Characters { get; private set; }
 

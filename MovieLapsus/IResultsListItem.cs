@@ -16,6 +16,8 @@ namespace MovieLapsus
 
         string ItemID();
 
+        string ItemSubtitle();
+
         float ItemPriority();
     }
 }
