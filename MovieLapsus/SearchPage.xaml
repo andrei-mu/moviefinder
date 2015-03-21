@@ -22,7 +22,7 @@
         </Grid.RowDefinitions>
         <!-- Title Panel -->
         
-        <StackPanel Grid.Row="0" Margin="19,0,0,0">
+        <StackPanel Grid.Row="0" Margin="10,0,10,0">
             <TextBlock x:Uid="ApplicationName"
                        Style="{ThemeResource TitleTextBlockStyle}"
                        Margin="0,12,0,0"/>
@@ -34,7 +34,7 @@
         </StackPanel>
 
         <!--TODO: Content should be placed within the following grid-->
-        <Grid Grid.Row="1" x:Name="DescGrid" Margin="19,9.5,19,0">
+        <Grid Grid.Row="1" x:Name="DescGrid" Margin="19,7,19,0">
             <TextBlock x:Name="searchDescTB"
                        Text="SearchDesc" 
                        Margin="0,5,0,25"
@@ -44,7 +44,7 @@
         <StackPanel Orientation="Vertical" Grid.Row="2">
             <AutoSuggestBox x:Name="autoSuggest1"
                             x:Uid="suggestBox"
-                            Margin="10, 20, 10, 10" 
+                            Margin="10, 10, 10, 10" 
                             VerticalAlignment="Stretch" 
                             TextChanged="OnSuggestBoxTextChanged" 
                             SuggestionChosen="OnSuggestionChosen"
@@ -62,18 +62,24 @@
                             LostFocus="OnLostFocus"
                             FontStyle="Italic" FontWeight="Thin"/>
 
-            <Image x:Name="actorImg" Height="100" NineGrid="1"/>
+            <!--Grid Grid.Row="1" x:Name="ImagesGrid" Margin="20,0,20,0"-->
+            <StackPanel Orientation="Horizontal" Width="230" Height="150">
+                <Image x:Name="actorImg1" Width="100" NineGrid="1" Visibility="Visible"/>
+                <Image x:Name="hidden" Width="30" NineGrid="1" Visibility="Visible"/>
+                <Image x:Name="actorImg2" Width="100" NineGrid="1" Visibility="Visible"/>
+            </StackPanel>
+
             <Button x:Name="searchBtn"
                     Content="Search"
                     HorizontalAlignment="Stretch"
-                    Margin="10, 20, 10, 20"
+                    Margin="10, 20, 10, 10"
                     VerticalAlignment="Stretch"
                     Click="OnSearchClicked"/>
             <TextBlock x:Name="commonMovies"
         		TextWrapping="Wrap"
         		Text=""
                 Margin="10, 20, 10, 20"
-        		FontSize="20" Height="91"/>
+        		FontSize="20" Height="42"/>
 
         </StackPanel>
     </Grid>

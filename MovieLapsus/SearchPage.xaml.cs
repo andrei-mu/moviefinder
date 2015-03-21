@@ -104,7 +104,8 @@ namespace MovieLapsus
                 SetSuggestBoxText(autoSuggest1, e.PageState["n1"] as string);
                 autoSuggest2.Tag = e.PageState["t2"];
                 SetSuggestBoxText(autoSuggest2, e.PageState["n2"] as string);
-                actorImg.Source = e.PageState["url"] as BitmapImage;
+                actorImg1.Source = e.PageState["url1"] as BitmapImage;
+                actorImg2.Source = e.PageState["url2"] as BitmapImage;
             }
 
             if (SearchForActor)
@@ -141,7 +142,8 @@ namespace MovieLapsus
             e.PageState["n1"] = autoSuggest1.Text;
             e.PageState["t2"] = autoSuggest2.Tag;
             e.PageState["n2"] = autoSuggest2.Text;
-            e.PageState["url"] = actorImg.Source;
+            e.PageState["url1"] = actorImg1.Source;
+            e.PageState["url2"] = actorImg2.Source;
         }
 
         #region NavigationHelper registration
@@ -255,6 +257,10 @@ namespace MovieLapsus
         {
             await m_dbApi.GetConfiguration();
 
+            bool isFirst = true;
+            if (sender.Name == "autoSuggest2")
+                isFirst = false;
+
             if (SearchForMovie)
             {
                 var selection = args.SelectedItem as SearchActor_ActorInfo;
@@ -267,7 +273,15 @@ namespace MovieLapsus
                 string path = await m_dbApi.GetActorImageFromID(selection.id.ToString());
 
                 BitmapImage src = new BitmapImage(new Uri(path));
-                actorImg.Source = src;
+
+                if (isFirst)
+                {
+                    actorImg1.Source = src;
+                }
+                else
+                {
+                    actorImg2.Source = src;
+                }
             }
             else
             {
@@ -282,7 +296,14 @@ namespace MovieLapsus
                 var desc = await m_dbApi.GetMovieDescriptionFromID(selection.id.ToString());
 
                 BitmapImage src = new BitmapImage(new Uri(m_dbApi.MakeMoviePosterPath(desc.poster_path)));
-                actorImg.Source = src;
+                if (isFirst)
+                {
+                    actorImg1.Source = src;
+                }
+                else
+                {
+                    actorImg2.Source = src;
+                }
             }
 
             this.searchBtn.Focus(FocusState.Programmatic);
