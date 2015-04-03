@@ -207,6 +207,7 @@ namespace MovieLapsus
                 return;
             }
 
+            sender.Tag = null;
             if (SearchForActor)
             {
                 await AutoCompleteMovie(sender);
@@ -334,10 +335,7 @@ namespace MovieLapsus
         {
             var suggestBox = sender as AutoSuggestBox;
 
-            if (suggestBox.Text == null || suggestBox.Text.Length == 0)
-            {
-                RefreshControl(suggestBox);
-            }
+            RefreshControl(suggestBox);
         }
 
         private void SetEmptySuggestBox(AutoSuggestBox suggestBox)
