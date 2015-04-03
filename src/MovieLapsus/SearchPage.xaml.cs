@@ -4,6 +4,7 @@ using System.Linq;
 using Windows.Phone.UI.Input;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Media.Animation;
 using Windows.UI.Xaml.Media.Imaging;
 using Windows.UI.Xaml.Navigation;
 
@@ -261,6 +262,9 @@ namespace MovieLapsus
             if (sender.Name == "autoSuggest2")
                 isFirst = false;
 
+            string imgPath = null;
+
+
             if (SearchForMovie)
             {
                 var selection = args.SelectedItem as SearchActor_ActorInfo;
@@ -270,23 +274,11 @@ namespace MovieLapsus
                     sender.Tag = selection.id.ToString();
                 }
 
-                string path = await m_dbApi.GetActorImageFromID(selection.id.ToString());
-
-                BitmapImage src = new BitmapImage(new Uri(path));
-
-                if (isFirst)
-                {
-                    actorImg1.Source = src;
-                }
-                else
-                {
-                    actorImg2.Source = src;
-                }
+                imgPath = await m_dbApi.GetActorImageFromID(selection.id.ToString());
             }
             else
             {
                 var selection = args.SelectedItem as SearchMovie_Result;
-                
 
                 if (selection != null)
                 {
@@ -295,18 +287,37 @@ namespace MovieLapsus
 
                 var desc = await m_dbApi.GetMovieDescriptionFromID(selection.id.ToString());
 
-                BitmapImage src = new BitmapImage(new Uri(m_dbApi.MakeMoviePosterPath(desc.poster_path)));
-                if (isFirst)
-                {
-                    actorImg1.Source = src;
-                }
-                else
-                {
-                    actorImg2.Source = src;
-                }
+                imgPath = m_dbApi.MakeMoviePosterPath(desc.poster_path);
             }
 
+            var imgUri = new Uri(imgPath);
+            var srcImg = new BitmapImage(imgUri);
+
+            var imageControl = isFirst ? actorImg1 : actorImg2;
+            imageControl.Source = srcImg;
+
             this.searchBtn.Focus(FocusState.Programmatic);
+
+            if (actorImg1.Source != null && actorImg2.Source != null)
+            {
+                var sb = new Storyboard();
+
+                DoubleAnimation di1 = new DoubleAnimation();
+                di1.To = 0;
+                di1.Duration = new Duration(TimeSpan.FromMilliseconds(1000));
+                Storyboard.SetTarget(di1, actorImg1);
+                Storyboard.SetTargetProperty(di1, "(Canvas.Left)");
+                sb.Children.Add(di1);
+
+                DoubleAnimation di2 = new DoubleAnimation();
+                di2.To = ImagesCanvas.Width - imageControl.Width;
+                di2.Duration = new Duration(TimeSpan.FromMilliseconds(1000));
+                Storyboard.SetTarget(di2, actorImg2);
+                Storyboard.SetTargetProperty(di2, "(Canvas.Left)");
+                sb.Children.Add(di2);
+
+                sb.Begin();
+            }
         }
 
         private void OnGotFocus(object sender, RoutedEventArgs e)

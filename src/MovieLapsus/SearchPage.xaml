@@ -62,12 +62,12 @@
                             LostFocus="OnLostFocus"
                             FontStyle="Italic" FontWeight="Thin"/>
 
-            <!--Grid Grid.Row="1" x:Name="ImagesGrid" Margin="20,0,20,0"-->
-            <StackPanel Orientation="Horizontal" Width="230" Height="150">
-                <Image x:Name="actorImg1" Width="100" NineGrid="1" Visibility="Visible"/>
-                <Image x:Name="hidden" Width="30" NineGrid="1" Visibility="Visible"/>
-                <Image x:Name="actorImg2" Width="100" NineGrid="1" Visibility="Visible"/>
-            </StackPanel>
+            <Canvas x:Name="ImagesCanvas" Margin="20,0,20,0" Width="240" Height="150">
+                <Image x:Name="actorImg1" Width="100" Height="150" Canvas.Left="70"  Canvas.ZIndex="1"/>
+
+                <Image x:Name="actorImg2" Width="100" Height="150" Canvas.Left="70" Canvas.ZIndex="0"/>
+
+            </Canvas>
 
             <Button x:Name="searchBtn"
                     Content="Search"
