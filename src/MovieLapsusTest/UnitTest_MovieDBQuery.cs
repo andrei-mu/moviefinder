@@ -23,6 +23,7 @@ namespace MovieLapsusTest
         }
 
         [TestMethod]
+        [Ignore]
         public async Task Test_SearchForMovie_List()
         {
             var api = new MovieLapsus.TMDB.TMDBQueries();
