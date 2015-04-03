@@ -125,6 +125,8 @@ namespace MovieLapsus
             {
                 SetEmptySuggestBox(autoSuggest2);
             }
+
+            StartAnimation();
         }
 
         /// <summary>
@@ -257,13 +259,6 @@ namespace MovieLapsus
         {
             await m_dbApi.GetConfiguration();
 
-            bool isFirst = true;
-            if (sender.Name == "autoSuggest2")
-                isFirst = false;
-
-            string imgPath = null;
-
-
             if (SearchForMovie)
             {
                 var selection = args.SelectedItem as SearchActor_ActorInfo;
@@ -272,8 +267,6 @@ namespace MovieLapsus
                 {
                     sender.Tag = selection.id.ToString();
                 }
-
-                imgPath = await m_dbApi.GetActorImageFromID(selection.id.ToString());
             }
             else
             {
@@ -283,47 +276,54 @@ namespace MovieLapsus
                 {
                     sender.Tag = selection.id.ToString();
                 }
-
-                var desc = await m_dbApi.GetMovieDescriptionFromID(selection.id.ToString());
-
-                imgPath = m_dbApi.MakeMoviePosterPath(desc.poster_path);
             }
-
-            var imgUri = new Uri(imgPath);
-            var srcImg = new BitmapImage(imgUri);
-
-            var imageControl = isFirst ? actorImg1 : actorImg2;
-            imageControl.Source = srcImg;
 
             this.searchBtn.Focus(FocusState.Programmatic);
 
+            RefreshControl(sender);
+        }
+
+        private void StartAnimation()
+        {
             if (actorImg1.Source != null && actorImg2.Source != null)
             {
                 var sb = new Storyboard();
 
-                DoubleAnimation di1 = new DoubleAnimation();
-                di1.To = 0;
-                di1.Duration = new Duration(TimeSpan.FromMilliseconds(1000));
-                Storyboard.SetTarget(di1, actorImg1);
-                Storyboard.SetTargetProperty(di1, "(Canvas.Left)");
-                sb.Children.Add(di1);
+                AnimateControl(sb, actorImg1, 0);
 
-                DoubleAnimation di2 = new DoubleAnimation();
-                di2.To = ImagesCanvas.Width - imageControl.Width;
-                di2.Duration = new Duration(TimeSpan.FromMilliseconds(1000));
-                Storyboard.SetTarget(di2, actorImg2);
-                Storyboard.SetTargetProperty(di2, "(Canvas.Left)");
-                sb.Children.Add(di2);
+                AnimateControl(sb, actorImg2, ImagesCanvas.Width - actorImg2.Width);
+
+                sb.Begin();
+
+                return;
+            }
+
+            if (actorImg1.Source != null || actorImg2.Source != null)
+            {
+                var sb = new Storyboard();
+
+                AnimateControl(sb, actorImg1, (ImagesCanvas.Width - actorImg1.Width) / 2);
+
+                AnimateControl(sb, actorImg2, (ImagesCanvas.Width - actorImg2.Width) / 2);
 
                 sb.Begin();
             }
+        }
+
+        private void AnimateControl(Storyboard sb, Image imgContrl, double to)
+        {
+            DoubleAnimation di1 = new DoubleAnimation();
+            di1.To = to;
+            di1.Duration = new Duration(TimeSpan.FromMilliseconds(700));
+            Storyboard.SetTarget(di1, imgContrl);
+            Storyboard.SetTargetProperty(di1, "(Canvas.Left)");
+            sb.Children.Add(di1);
         }
 
         private void OnGotFocus(object sender, RoutedEventArgs e)
         {
             var suggestBox = sender as AutoSuggestBox;
 
-            
             if (suggestBox.FontStyle == Windows.UI.Text.FontStyle.Italic)
             {
                 SetSuggestBoxText(suggestBox, "");
@@ -336,7 +336,7 @@ namespace MovieLapsus
 
             if (suggestBox.Text == null || suggestBox.Text.Length == 0)
             {
-                SetEmptySuggestBox(suggestBox);
+                RefreshControl(suggestBox);
             }
         }
 
@@ -354,11 +354,59 @@ namespace MovieLapsus
             suggestBox.FontWeight = Windows.UI.Text.FontWeights.Light;
         }
 
+        private Image ImageControlFromEditControl(AutoSuggestBox suggestBox)
+        {
+            if (suggestBox.Name == "autoSuggest1")
+            {
+                return actorImg1;
+            }
+
+            if (suggestBox.Name == "autoSuggest2")
+            {
+                return actorImg2;
+            }
+
+            throw new Exception("unrecognised control");
+        }
+
         private void SetSuggestBoxText(AutoSuggestBox suggestBox, string text)
         {
             suggestBox.Text = text;
             suggestBox.FontStyle = Windows.UI.Text.FontStyle.Normal;
             suggestBox.FontWeight = Windows.UI.Text.FontWeights.Normal;
+        }
+
+        private async void RefreshControl(AutoSuggestBox suggestBox)
+        {
+            var imageControl = this.ImageControlFromEditControl(suggestBox);
+
+            if (suggestBox.Tag == null)
+            {
+                imageControl.Source = null;
+                SetEmptySuggestBox(suggestBox);
+            }
+            else
+            {
+                string imgPath = null;
+                string id = suggestBox.Tag as string;
+
+                if (SearchForMovie)
+                {
+                    imgPath = await m_dbApi.GetActorImageFromID(id);
+                }
+                else
+                {
+                    var desc = await m_dbApi.GetMovieDescriptionFromID(id);
+                    imgPath = m_dbApi.MakeMoviePosterPath(desc.poster_path);
+                }
+
+                var imgUri = new Uri(imgPath);
+                var srcImg = new BitmapImage(imgUri);
+
+                imageControl.Source = srcImg;
+            }
+
+            StartAnimation();
         }
     }
 }
