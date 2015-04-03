@@ -210,15 +210,15 @@ namespace MovieLapsus
             sender.Tag = null;
             if (SearchForActor)
             {
-                await AutoCompleteMovie(sender);
+                await RefreshMovieSuggestions(sender);
             }
             else
             {
-                await AutoCompleteActor(sender);
+                await RefreshActorSuggestions(sender);
             }
         }
 
-        private async System.Threading.Tasks.Task AutoCompleteActor(AutoSuggestBox sender)
+        private async System.Threading.Tasks.Task RefreshActorSuggestions(AutoSuggestBox sender)
         {
             sender.Tag = null;
             if (sender.Text.Length <= 2)
@@ -237,7 +237,7 @@ namespace MovieLapsus
             sender.ItemsSource = suggestions;
         }
 
-        private async System.Threading.Tasks.Task AutoCompleteMovie(AutoSuggestBox sender)
+        private async System.Threading.Tasks.Task RefreshMovieSuggestions(AutoSuggestBox sender)
         {
             sender.Tag = null;
             if (sender.Text.Length <= 3)
@@ -286,29 +286,30 @@ namespace MovieLapsus
 
         private void StartAnimation()
         {
+            if (actorImg1.Source == null && actorImg2.Source == null)
+            {
+                return;
+            }
+
+            double to1 = 0,
+                   to2 = 0;
+
             if (actorImg1.Source != null && actorImg2.Source != null)
             {
-                var sb = new Storyboard();
-
-                AnimateControl(sb, actorImg1, 0);
-
-                AnimateControl(sb, actorImg2, ImagesCanvas.Width - actorImg2.Width);
-
-                sb.Begin();
-
-                return;
+                to1 = 0;
+                to2 = ImagesCanvas.Width - actorImg2.Width;
             }
 
             if (actorImg1.Source != null || actorImg2.Source != null)
             {
-                var sb = new Storyboard();
-
-                AnimateControl(sb, actorImg1, (ImagesCanvas.Width - actorImg1.Width) / 2);
-
-                AnimateControl(sb, actorImg2, (ImagesCanvas.Width - actorImg2.Width) / 2);
-
-                sb.Begin();
+                to1 = (ImagesCanvas.Width - actorImg1.Width) / 2;
+                to2 = (ImagesCanvas.Width - actorImg2.Width) / 2;
             }
+
+            var sb = new Storyboard();
+            AnimateControl(sb, actorImg1, to1);
+            AnimateControl(sb, actorImg2, to2);
+            sb.Begin();
         }
 
         private void AnimateControl(Storyboard sb, Image imgContrl, double to)
