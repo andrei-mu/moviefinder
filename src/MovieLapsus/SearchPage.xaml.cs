@@ -39,7 +39,6 @@ namespace MovieLapsus
         private TMDB.TMDBAPI m_dbApi = null;
         private Windows.ApplicationModel.Resources.ResourceLoader m_resLoader = null;
         private string m_searchParameter = "";
-        private string m_oldSearchParameter = "";
 
         public bool SearchForMovie
         {

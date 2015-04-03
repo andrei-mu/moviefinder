@@ -34,6 +34,7 @@ namespace MovieLapsusTest
         }
 
         [TestMethod]
+        [Ignore]
         public async Task Test_CommonMoviesSimple()
         {
             await api.GetConfiguration();
@@ -77,6 +78,7 @@ namespace MovieLapsusTest
         }
 
         [TestMethod]
+        [Ignore]
         public async Task Test_CommonActorsSimple()
         {
             await api.GetConfiguration();
