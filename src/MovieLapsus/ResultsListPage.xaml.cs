@@ -23,6 +23,7 @@ namespace MovieLapsus
 {
     public sealed partial class ResultsListPage : Page
     {
+        private ResourceLoader m_resLoader = null;
         private readonly NavigationHelper navigationHelper;
         private readonly ObservableDictionary defaultViewModel = new ObservableDictionary();
 
@@ -52,6 +53,19 @@ namespace MovieLapsus
             get { return this.defaultViewModel; }
         }
 
+        public Windows.ApplicationModel.Resources.ResourceLoader ResLoader
+        {
+            get
+            {
+                if (m_resLoader == null)
+                {
+                    m_resLoader = new Windows.ApplicationModel.Resources.ResourceLoader();
+                }
+
+                return m_resLoader;
+            }
+        }
+
         /// <summary>
         /// Populates the page with content passed during navigation.  Any saved state is also
         /// provided when recreating a page from a prior session.
@@ -65,16 +79,12 @@ namespace MovieLapsus
         /// session.  The state will be null the first time a page is visited.</param>
         private void NavigationHelper_LoadState(object sender, LoadStateEventArgs e)
         {
-            // TODO: Create an appropriate data model for your problem domain to replace the sample data.
-            //var dataGroup = await SampleDataSource.GetGroupAsync((string)e.NavigationParameter);
-
-            SampleDataGroup dataGroup = new SampleDataGroup("gogu", "titlu1", "subtitlu2", "", "desc");
+            string title = ResLoader.GetString("ResultsTitle");
+            SampleDataGroup dataGroup = new SampleDataGroup("dummy", title, "dummy2", "", "desc");
 
             var resultItemList = e.NavigationParameter as IEnumerable<IResultsListItem>;
-
             foreach (var listItem in resultItemList)
             {
-                //var listItem = movie as IResultsListItem;
                 var dataItem = new SampleDataItem(listItem.ItemID(),
                                    listItem.ItemName(),
                                    listItem.ItemSubtitle(),
