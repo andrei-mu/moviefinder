@@ -1,6 +1,7 @@
 ﻿using MovieLapsus.Common;
 using System;
 using System.Linq;
+using Windows.ApplicationModel.Resources;
 using Windows.Phone.UI.Input;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -35,9 +36,8 @@ namespace MovieLapsus
     {
         private readonly NavigationHelper navigationHelper;
 
-        private TMDB.TMDBQueries m_dbQueries = null;
         private TMDB.TMDBAPI m_dbApi = null;
-        private Windows.ApplicationModel.Resources.ResourceLoader m_resLoader = null;
+        private ResourceLoader m_resLoader = null;
         private string m_searchParameter = "";
 
         public bool SearchForMovie
@@ -77,10 +77,7 @@ namespace MovieLapsus
             this.navigationHelper.LoadState += this.NavigationHelper_LoadState;
             this.navigationHelper.SaveState += this.NavigationHelper_SaveState;
 
-            m_dbQueries = new TMDB.TMDBQueries();
-            m_dbApi = new TMDB.TMDBAPI(m_dbQueries);
-
-            //this.NavigationCacheMode = NavigationCacheMode.Required;
+            m_dbApi = new TMDB.TMDBAPI();
         }
 
         /// <summary>
@@ -94,16 +91,18 @@ namespace MovieLapsus
         /// <see cref="Frame.Navigate(Type, Object)"/> when this page was initially requested and
         /// a dictionary of state preserved by this page during an earlier
         /// session.  The state will be null the first time a page is visited.</param>
-        private void NavigationHelper_LoadState(object sender, LoadStateEventArgs e)
+        private async void NavigationHelper_LoadState(object sender, LoadStateEventArgs e)
         {
+            await m_dbApi.GetConfiguration();
+
             m_searchParameter = e.NavigationParameter.ToString();
 
             if (e.PageState != null)
             {
-                autoSuggest1.Tag = e.PageState["t1"];
-                SetSuggestBoxText(autoSuggest1, e.PageState["n1"] as string);
-                autoSuggest2.Tag = e.PageState["t2"];
-                SetSuggestBoxText(autoSuggest2, e.PageState["n2"] as string);
+                autoSuggest1.Tag = e.PageState["tag1"];
+                SetSuggestBoxText(autoSuggest1, e.PageState["name1"] as string);
+                autoSuggest2.Tag = e.PageState["tag2"];
+                SetSuggestBoxText(autoSuggest2, e.PageState["name2"] as string);
                 actorImg1.Source = e.PageState["url1"] as BitmapImage;
                 actorImg2.Source = e.PageState["url2"] as BitmapImage;
             }
@@ -140,10 +139,10 @@ namespace MovieLapsus
         private void NavigationHelper_SaveState(object sender, SaveStateEventArgs e)
         {
             // TODO: Save the unique state of the page here.
-            e.PageState["t1"] = autoSuggest1.Tag;
-            e.PageState["n1"] = autoSuggest1.Text;
-            e.PageState["t2"] = autoSuggest2.Tag;
-            e.PageState["n2"] = autoSuggest2.Text;
+            e.PageState["tag1"] = autoSuggest1.Tag;
+            e.PageState["name1"] = autoSuggest1.Text;
+            e.PageState["tag2"] = autoSuggest2.Tag;
+            e.PageState["name2"] = autoSuggest2.Text;
             e.PageState["url1"] = actorImg1.Source;
             e.PageState["url2"] = actorImg2.Source;
         }
@@ -256,9 +255,9 @@ namespace MovieLapsus
             sender.ItemsSource = suggestions;
         }
 
-        private async void OnSuggestionChosen(AutoSuggestBox sender, AutoSuggestBoxSuggestionChosenEventArgs args)
+        private void OnSuggestionChosen(AutoSuggestBox sender, AutoSuggestBoxSuggestionChosenEventArgs args)
         {
-            await m_dbApi.GetConfiguration();
+            System.Diagnostics.Debug.WriteLine("OnSuggestionChosen");
 
             if (SearchForMovie)
             {
@@ -299,8 +298,7 @@ namespace MovieLapsus
                 to1 = 0;
                 to2 = ImagesCanvas.Width - actorImg2.Width;
             }
-
-            if (actorImg1.Source != null || actorImg2.Source != null)
+            else
             {
                 to1 = (ImagesCanvas.Width - actorImg1.Width) / 2;
                 to2 = (ImagesCanvas.Width - actorImg2.Width) / 2;
@@ -335,6 +333,8 @@ namespace MovieLapsus
         private void OnLostFocus(object sender, RoutedEventArgs e)
         {
             var suggestBox = sender as AutoSuggestBox;
+
+            System.Diagnostics.Debug.WriteLine("OnLostFocus");
 
             RefreshControl(suggestBox);
         }

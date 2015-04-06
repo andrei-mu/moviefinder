@@ -165,4 +165,7 @@
   <data name="empty_movie_name" xml:space="preserve">
     <value>name of an movie</value>
   </data>
+  <data name="ResultsTitle" xml:space="preserve">
+    <value>Results ...</value>
+  </data>
 </root>
