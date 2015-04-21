@@ -12,7 +12,9 @@ namespace MovieLapsusTest
     public class UnitTest_MovieDBAPI
     {
         private static int BRAD_PITT_ID_INT = 287;
+        private static int JENNA_DAVIS_ID_INT = 1181646;
         private static string BRAD_PITT_ID = BRAD_PITT_ID_INT.ToString();
+        private static string JENNA_DAVIS_ID = JENNA_DAVIS_ID_INT.ToString();
 
         private static int PULP_FICTION_ID_INT = 680;
 
@@ -145,10 +147,34 @@ namespace MovieLapsusTest
         {
             var actorInfo = await api.GetActorImageListFromID(BRAD_PITT_ID);
 
-            Assert.AreEqual(287, actorInfo.id);
+            Assert.AreEqual(BRAD_PITT_ID_INT, actorInfo.id);
             Assert.IsTrue(actorInfo.profiles.Count > 0);
         }
 
+        [TestMethod]
+        public async Task Test_GetActorImages_FromIDWithoutImages()
+        {
+            var actorInfo = await api.GetActorImageListFromID(JENNA_DAVIS_ID);
+
+            Assert.AreEqual(JENNA_DAVIS_ID_INT, actorInfo.id);
+            Assert.IsTrue(actorInfo.profiles.Count == 0);
+        }
+
+        [TestMethod]
+        public async Task Test_GetActorImage_FromID()
+        {
+            var imgPath = await api.GetActorImageFromID(BRAD_PITT_ID);
+
+            Assert.AreEqual("http://image.tmdb.org/t/p/w45/kc3M04QQAuZ9woUvH3Ju5T7ZqG5.jpg", imgPath);
+        }
+
+        [TestMethod]
+        public async Task Test_GetActorImage_FromIDWithoutImage()
+        {
+            var imgPath = await api.GetActorImageFromID(JENNA_DAVIS_ID);
+
+            Assert.IsTrue(imgPath.Length == 0);
+        }
 
         [TestMethod]
         public async Task Test_GetConfiguration()

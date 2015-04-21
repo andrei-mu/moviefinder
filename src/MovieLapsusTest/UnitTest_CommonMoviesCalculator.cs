@@ -34,17 +34,13 @@ namespace MovieLapsusTest
         }
 
         [TestMethod]
-        [Ignore]
         public async Task Test_CommonMoviesSimple()
         {
             await api.GetConfiguration();
             var calc = new MovieLapsus.CommonCalculator(api);
             var result = await calc.CalculateCommonMovies(BEN_STILLER_ID, OWEN_WILSON_ID);
 
-            Assert.AreEqual(11, result.Count());
-
-            Assert.AreEqual("181533", result.First().ItemID());
-            Assert.AreEqual("9894", result.Last().ItemID());
+            Assert.AreEqual(12, result.Count());
 
             {
                 var movie = (
@@ -78,7 +74,6 @@ namespace MovieLapsusTest
         }
 
         [TestMethod]
-        [Ignore]
         public async Task Test_CommonActorsSimple()
         {
             await api.GetConfiguration();
@@ -86,9 +81,6 @@ namespace MovieLapsusTest
             var result = await calc.CalculateCommonActors(STARSKY_HUTCH_ID, ZOOLANDER_ID);
 
             Assert.AreEqual(4, result.Count());
-
-            Assert.AreEqual("23659", result.First().ItemID());
-            Assert.AreEqual("887", result.Last().ItemID());
 
             {
                 var actor = (

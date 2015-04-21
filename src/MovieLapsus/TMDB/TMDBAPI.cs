@@ -110,8 +110,12 @@ namespace MovieLapsus
                 DBConfig conf = await GetConfiguration();
 
                 var images = await GetActorImageListFromID(actorID);
-                var imagePath = images.profiles.First();
+                if (images.profiles.Count == 0)
+                {
+                    return "";
+                }
 
+                var imagePath = images.profiles.First();
                 string path = MakeActorPosterPath(imagePath.file_path);
                 return path;
             }

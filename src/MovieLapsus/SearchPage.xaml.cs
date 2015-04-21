@@ -1,6 +1,7 @@
 ﻿using MovieLapsus.Common;
 using System;
 using System.Linq;
+using System.Threading.Tasks;
 using Windows.ApplicationModel.Resources;
 using Windows.Phone.UI.Input;
 using Windows.UI.Xaml;
@@ -39,6 +40,7 @@ namespace MovieLapsus
         private TMDB.TMDBAPI m_dbApi = null;
         private ResourceLoader m_resLoader = null;
         private string m_searchParameter = "";
+        private Task<DBConfig> m_getConfigTask = null;
 
         public bool SearchForMovie
         {
@@ -91,9 +93,10 @@ namespace MovieLapsus
         /// <see cref="Frame.Navigate(Type, Object)"/> when this page was initially requested and
         /// a dictionary of state preserved by this page during an earlier
         /// session.  The state will be null the first time a page is visited.</param>
-        private async void NavigationHelper_LoadState(object sender, LoadStateEventArgs e)
+        private /*async*/ void NavigationHelper_LoadState(object sender, LoadStateEventArgs e)
         {
-            await m_dbApi.GetConfiguration();
+            m_getConfigTask = m_dbApi.GetConfiguration();
+            //m_getConfigTask.Start();
 
             m_searchParameter = e.NavigationParameter.ToString();
 
@@ -320,8 +323,14 @@ namespace MovieLapsus
             sb.Children.Add(di1);
         }
 
-        private void OnGotFocus(object sender, RoutedEventArgs e)
+        private async void OnGotFocus(object sender, RoutedEventArgs e)
         {
+            if (m_getConfigTask != null)
+            {
+                await m_getConfigTask;
+                m_getConfigTask = null;
+            }
+
             var suggestBox = sender as AutoSuggestBox;
 
             if (suggestBox.FontStyle == Windows.UI.Text.FontStyle.Italic)
