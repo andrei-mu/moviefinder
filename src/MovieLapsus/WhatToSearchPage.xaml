@@ -49,8 +49,8 @@
                 <RowDefinition Height="1*"/>
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="3*"/>
-                <ColumnDefinition Width="4*"/>
+                <ColumnDefinition Width="6*"/>
+                <ColumnDefinition Width="11*"/>
             </Grid.ColumnDefinitions>
             
             <Button x:Name="searchMovieBtn"
@@ -60,7 +60,7 @@
                     FontSize="14"
                     Click="OnButtonClicked"/>
             <TextBlock x:Uid="AdvInfoSearchMovie"
-                       FontSize="13"
+                       FontSize="16"
                        TextWrapping="WrapWholeWords"
                        Grid.Row="1"
                        Grid.Column="1"
@@ -75,7 +75,7 @@
                     FontSize="14"
                     Click="OnButtonClicked"/>
             <TextBlock x:Uid="AdvInfoSearchActor"
-                       FontSize="13"
+                       FontSize="16"
                        TextWrapping="WrapWholeWords"
                        Margin="0,0,10,0"
                        Grid.Row="2"

@@ -23,7 +23,6 @@ namespace MovieLapsusTest
         }
 
         [TestMethod]
-        [Ignore]
         public async Task Test_SearchForMovie_List()
         {
             var api = new MovieLapsus.TMDB.TMDBQueries();
@@ -31,7 +30,6 @@ namespace MovieLapsusTest
             string ret = await api.SearchForMovie("fight", true);
 
             Assert.IsTrue(ret.Contains("Fight Club"));
-            Assert.IsTrue(ret.Contains("The Fighter"));
         }
 
         [TestMethod]
