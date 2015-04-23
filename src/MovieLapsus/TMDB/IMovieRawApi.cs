@@ -4,7 +4,7 @@ namespace MovieLapsus
 {
     namespace TMDB
     {
-        public interface IMovieDB_API_RAW
+        public interface IMovieRawApi
         {
             System.Threading.Tasks.Task<string> SearchForActor(string actorName);
             System.Threading.Tasks.Task<string> SearchForMovie(string movieName, bool autocomplete);
