@@ -1,5 +1,6 @@
 ﻿using MovieLapsus.Common;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Windows.ApplicationModel.Resources;
@@ -30,6 +31,97 @@ namespace MovieLapsus
         public string name;
         public int id;
     }
+
+    class Provider
+    {
+        private bool movieSearch = false;
+        private TMDB.TMDBAPI m_dbApi = null;
+
+        public Provider(TMDB.TMDBAPI dbApi, string parameter)
+        {
+            movieSearch = parameter == "movie";
+            m_dbApi = dbApi;
+        }
+
+        public string SearchDescriptionId
+        {
+            get
+            {
+                if (movieSearch)
+                    return "SearchDesc4Movie";
+
+                return "SearchDesc4Actor";
+            }
+        }
+
+        public string NoResultId
+        {
+            get
+            {
+                return movieSearch ? "no_common_movies" : "no_common_actors";
+            }
+        }
+
+        public string EmptySuggestBoxId
+        {
+            get
+            {
+                return movieSearch ? "empty_actor_name" : "empty_movie_name";
+            }
+        }
+
+        public async Task<System.Collections.Generic.IEnumerable<IResultsListItem>> GetCommonResults(string id1, string id2)
+        {
+            var calc = new CommonCalculator(m_dbApi);
+
+            IEnumerable<IResultsListItem> list = null;
+            if (movieSearch)
+            {
+                list = await calc.CalculateCommonMovies(id1, id2);
+            }
+            else
+            {
+                list = await calc.CalculateCommonActors(id1, id2);
+            }
+
+            return list;
+        }
+
+        public async Task<string> GetPosterPath(string id)
+        {
+            if (movieSearch)
+            {
+                return await m_dbApi.GetActorImageFromID(id);
+            }
+            else
+            {
+                var desc = await m_dbApi.GetMovieDescriptionFromID(id);
+                return m_dbApi.MakeMoviePosterPath(desc.poster_path);
+            }
+        }
+
+        public string GetObjectIdStr(Object obj)
+        {
+            try
+            {
+                if (movieSearch)
+                {
+                    var selection = obj as SearchActor_ActorInfo;
+                    return selection.id.ToString();
+                }
+                else
+                {
+                    var selection = obj as SearchMovie_Result;
+                    return selection.id.ToString();
+                }
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }
+    }
+
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
@@ -42,13 +134,7 @@ namespace MovieLapsus
         private string m_searchParameter = "";
         private Task<DBConfig> m_getConfigTask = null;
 
-        public bool SearchForMovie
-        {
-            get
-            {
-                return m_searchParameter == "movie";
-            }
-        }
+        private Provider provider = null;
 
         public bool SearchForActor
         {
@@ -96,9 +182,9 @@ namespace MovieLapsus
         private /*async*/ void NavigationHelper_LoadState(object sender, LoadStateEventArgs e)
         {
             m_getConfigTask = m_dbApi.GetConfiguration();
-            //m_getConfigTask.Start();
-
             m_searchParameter = e.NavigationParameter.ToString();
+
+            provider = new Provider(m_dbApi, m_searchParameter);
 
             if (e.PageState != null)
             {
@@ -110,14 +196,7 @@ namespace MovieLapsus
                 actorImg2.Source = e.PageState["url2"] as BitmapImage;
             }
 
-            if (SearchForActor)
-            {
-                searchDescTB.Text = ResLoader.GetString("SearchDesc4Actor");
-            }
-            if (SearchForMovie)
-            {
-                searchDescTB.Text = ResLoader.GetString("SearchDesc4Movie");
-            }
+            searchDescTB.Text = ResLoader.GetString(provider.SearchDescriptionId);
 
             if (autoSuggest1.Tag == null)
             {
@@ -178,28 +257,25 @@ namespace MovieLapsus
 
         private async void OnSearchClicked(object sender, RoutedEventArgs e)
         {
+            commonMovies.Text = "";
             if (autoSuggest1.Tag == null && autoSuggest2.Tag == null)
             {
                 commonMovies.Text = "Unknown actor(s) selected!";
                 return;
             }
 
-            var calc = new CommonCalculator(m_dbApi);
             string id1 = (autoSuggest1.Tag == null)? null : autoSuggest1.Tag.ToString();
             string id2 = (autoSuggest2.Tag == null) ? null : autoSuggest2.Tag.ToString();
 
-            if (SearchForMovie)
-            {
-                var list = await calc.CalculateCommonMovies(id1, id2);
+            var list = await this.provider.GetCommonResults(id1, id2);
 
-                Frame.Navigate(typeof(ResultsListPage), list);
-            }
-            else
+            if (list == null || list.Count() == 0)
             {
-                var list = await calc.CalculateCommonActors(id1, id2);
-
-                Frame.Navigate(typeof(ResultsListPage), list);
+                commonMovies.Text = ResLoader.GetString(this.provider.NoResultId);
+                return;
             }
+
+            Frame.Navigate(typeof(ResultsListPage), list);
         }
 
         private async void OnSuggestBoxTextChanged(AutoSuggestBox sender, AutoSuggestBoxTextChangedEventArgs args)
@@ -262,23 +338,10 @@ namespace MovieLapsus
         {
             System.Diagnostics.Debug.WriteLine("OnSuggestionChosen");
 
-            if (SearchForMovie)
+            var tag = provider.GetObjectIdStr(args.SelectedItem);
+            if (tag != null)
             {
-                var selection = args.SelectedItem as SearchActor_ActorInfo;
-
-                if (selection != null)
-                {
-                    sender.Tag = selection.id.ToString();
-                }
-            }
-            else
-            {
-                var selection = args.SelectedItem as SearchMovie_Result;
-
-                if (selection != null)
-                {
-                    sender.Tag = selection.id.ToString();
-                }
+                sender.Tag = tag;
             }
 
             this.searchBtn.Focus(FocusState.Programmatic);
@@ -343,18 +406,12 @@ namespace MovieLapsus
         {
             var suggestBox = sender as AutoSuggestBox;
 
-            System.Diagnostics.Debug.WriteLine("OnLostFocus");
-
             RefreshControl(suggestBox);
         }
 
         private void SetEmptySuggestBox(AutoSuggestBox suggestBox)
         {
-            string str = ResLoader.GetString("empty_actor_name");
-            if (SearchForActor)
-            {
-                str = ResLoader.GetString("empty_movie_name");
-            }
+            string str = ResLoader.GetString(this.provider.EmptySuggestBoxId);
 
             suggestBox.Tag = null;
             suggestBox.Text = str;
@@ -395,23 +452,16 @@ namespace MovieLapsus
             }
             else
             {
-                string imgPath = null;
                 string id = suggestBox.Tag as string;
+                string imgPath = await provider.GetPosterPath(id);
 
-                if (SearchForMovie)
+                if (imgPath != null && imgPath.Length > 0)
                 {
-                    imgPath = await m_dbApi.GetActorImageFromID(id);
-                }
-                else
-                {
-                    var desc = await m_dbApi.GetMovieDescriptionFromID(id);
-                    imgPath = m_dbApi.MakeMoviePosterPath(desc.poster_path);
-                }
+                    var imgUri = new Uri(imgPath);
+                    var srcImg = new BitmapImage(imgUri);
 
-                var imgUri = new Uri(imgPath);
-                var srcImg = new BitmapImage(imgUri);
-
-                imageControl.Source = srcImg;
+                    imageControl.Source = srcImg;
+                }
             }
 
             StartAnimation();

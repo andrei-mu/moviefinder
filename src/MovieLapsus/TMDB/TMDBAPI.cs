@@ -14,14 +14,14 @@ namespace MovieLapsus
         public class TMDBAPI
         {
             private static DBConfig _configuration = null;
-            private IMovieDBQueries queryInterface = null;
+            private IMovieDB_API_RAW queryInterface = null;
 
 
             public TMDBAPI() : this(new TMDB.TMDBQueries())
             {
             }
 
-            public TMDBAPI(TMDB.IMovieDBQueries rawInterface)
+            public TMDBAPI(TMDB.IMovieDB_API_RAW rawInterface)
             {
                 queryInterface = rawInterface;
             }
