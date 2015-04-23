@@ -163,9 +163,15 @@
     <value>Search ...</value>
   </data>
   <data name="empty_movie_name" xml:space="preserve">
-    <value>name of an movie</value>
+    <value>name of a movie</value>
   </data>
   <data name="ResultsTitle" xml:space="preserve">
     <value>Results ...</value>
+  </data>
+  <data name="no_common_actors" xml:space="preserve">
+    <value>No actor found!</value>
+  </data>
+  <data name="no_common_movies" xml:space="preserve">
+    <value>No movie found!</value>
   </data>
 </root>

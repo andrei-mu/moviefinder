@@ -10,7 +10,7 @@ namespace MovieLapsus
 {
     namespace TMDB
     {
-        public class TMDBQueries : TMDB.IMovieDBQueries
+        public class TMDBQueries : TMDB.IMovieDB_API_RAW
         {
             private static string API_KEY = "7d3315bb7234145c8d3b6e4b89e6ec55";
 

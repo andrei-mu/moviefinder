@@ -92,12 +92,11 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Assets\Logo.scaleT-240.png" />
-    <Content Include="Assets\SmallLogo.scaleT-240.png" />
-    <Content Include="Assets\SplashScreen.scaleT-240.png" />
-    <Content Include="Assets\Square71x71Logo.scaleT-240.png" />
-    <Content Include="Assets\StoreLogo.scaleT-240.png" />
-    <Content Include="Assets\WideLogo.scaleT-240.png" />
+    <Content Include="Assets\LogoT.scale-240.png" />
+    <Content Include="Assets\SmallLogoT.scale-240.png" />
+    <Content Include="Assets\SplashScreenT.scale-240.png" />
+    <Content Include="Assets\Square71x71LogoT.scale-240.png" />
+    <Content Include="Assets\StoreLogoT.scale-240.png" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
