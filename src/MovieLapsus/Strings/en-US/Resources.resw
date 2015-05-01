@@ -127,7 +127,7 @@
     <value>name of an actor</value>
   </data>
   <data name="SearchActor.Content" xml:space="preserve">
-    <value>Actor search</value>
+    <value>Actor Search</value>
   </data>
   <data name="SearchMovie.Content" xml:space="preserve">
     <value>Movie Search</value>

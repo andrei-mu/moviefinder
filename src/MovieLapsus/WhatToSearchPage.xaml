@@ -27,7 +27,7 @@
             <TextBlock x:Uid="ApplicationName"
                        Style="{ThemeResource TitleTextBlockStyle}"
                        Margin="0,12,0,0"/>
-            
+
             <TextBlock x:Uid="SelectionPage"
                        Margin="0,-6.5,0,26.5"
                        Style="{ThemeResource HeaderTextBlockStyle}"
@@ -43,45 +43,42 @@
         </Grid>
         <Grid Grid.Row="2" x:Name="SelectGrid" Margin="19,9.5,19,0">
             <Grid.RowDefinitions>
-                <RowDefinition Height="1*"/>
-                <RowDefinition Height="70"/>
-                <RowDefinition Height="70"/>
-                <RowDefinition Height="1*"/>
+                <RowDefinition Height="7*"/>
+                <RowDefinition Height="60"/>
+                <RowDefinition Height="90"/>
+                <RowDefinition Height="40"/>
+                <RowDefinition Height="90"/>
+                <RowDefinition Height="3*"/>
             </Grid.RowDefinitions>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="6*"/>
-                <ColumnDefinition Width="11*"/>
-            </Grid.ColumnDefinitions>
-            
-            <Button x:Name="searchMovieBtn"
-                    x:Uid="SearchMovie"
-                    Grid.Row="1"
-                    VerticalAlignment="Center"
-                    FontSize="14"
-                    Click="OnButtonClicked"/>
+
             <TextBlock x:Uid="AdvInfoSearchMovie"
                        FontSize="16"
                        TextWrapping="WrapWholeWords"
-                       Grid.Row="1"
-                       Grid.Column="1"
-                       Margin="0,0,10,0"
-                       VerticalAlignment="Center"
-                       Foreground="{ThemeResource PhoneAccentBrush}"/>
+                       Grid.Row="2"
+                       Text="asdqwe"
+                       Foreground="{ThemeResource PhoneAccentBrush}" Margin="0,0.167,0,60.833" 
+                       />
 
-            <Button x:Name="searchActorBtn" 
-                    x:Uid="SearchActor"
+            <Button x:Name="searchMovieBtn"
+                    x:Uid="SearchMovie"
                     Grid.Row="2"
-                    VerticalAlignment="Center"
-                    FontSize="14"
-                    Click="OnButtonClicked"/>
+                    FontSize="16"
+                    Width ="273"
+                    Click="OnButtonClicked" Margin="0,28.167,0,4.833"/>
+
             <TextBlock x:Uid="AdvInfoSearchActor"
                        FontSize="16"
                        TextWrapping="WrapWholeWords"
-                       Margin="0,0,10,0"
-                       Grid.Row="2"
-                       Grid.Column="1"
-                       VerticalAlignment="Center"
-                       Foreground="{ThemeResource PhoneAccentBrush}"/>
+                       Grid.Row="4"
+                       Text="asdqwe"
+                       Foreground="{ThemeResource PhoneAccentBrush}" Margin="0,0.167,0,60.833" 
+                       />
+            <Button x:Name="searchActorBtn" 
+                    x:Uid="SearchActor"
+                    Grid.Row="4"
+                    FontSize="16"
+                    Width ="273"
+                    Click="OnButtonClicked" Margin="0,28.167,0,4.833"/>
         </Grid>
     </Grid>
 </Page>
