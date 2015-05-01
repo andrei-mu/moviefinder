@@ -15,23 +15,6 @@ using Windows.UI.Xaml.Navigation;
 
 namespace MovieLapsus
 {
-    internal struct ActorSuggestInfo
-    {
-        public ActorSuggestInfo(string _name, int _id)
-        {
-            name = _name;
-            id = _id;
-        }
-
-        public override string ToString()
-        {
-            return name;
-        }
-
-        public string name;
-        public int id;
-    }
-
     class Provider
     {
         private bool movieSearch = false;
@@ -153,6 +136,34 @@ namespace MovieLapsus
                 return null;
             }
         }
+
+        public async Task<Object> GetSuggestions(string suggestionText)
+        {
+            const int SUGGESTION_NO = 5;
+
+            if (movieSearch)
+            {
+                var searchInfo = await m_dbApi.SearchForActor(suggestionText);
+                if (searchInfo.results.Count == 0)
+                    return null;
+
+                var suggestions = (from result in searchInfo.results
+                                   select result).Take(SUGGESTION_NO);
+
+                return suggestions;
+            }
+            else
+            {
+                var searchInfo = await m_dbApi.SearchForMovie(suggestionText, true);
+                if (searchInfo.results.Count == 0)
+                    return null;
+
+                var suggestions = (from result in searchInfo.results
+                                   select result).Take(SUGGESTION_NO);
+
+                return suggestions;
+            }
+        }
     }
 
     /// <summary>
@@ -162,20 +173,9 @@ namespace MovieLapsus
     {
         private readonly NavigationHelper navigationHelper;
 
-        private TMDB.TMDBAPI m_dbApi = null;
         private ResourceLoader m_resLoader = null;
-        private string m_searchParameter = "";
-        private Task<DBConfig> m_getConfigTask = null;
-
         private Provider provider = null;
-
-        public bool SearchForActor
-        {
-            get
-            {
-                return m_searchParameter == "actor";
-            }
-        }
+        private Task<DBConfig> m_getConfigTask = null;
 
         public Windows.ApplicationModel.Resources.ResourceLoader ResLoader
         {
@@ -198,7 +198,7 @@ namespace MovieLapsus
             this.navigationHelper.LoadState += this.NavigationHelper_LoadState;
             this.navigationHelper.SaveState += this.NavigationHelper_SaveState;
 
-            m_dbApi = new TMDB.TMDBAPI();
+            
         }
 
         /// <summary>
@@ -212,12 +212,13 @@ namespace MovieLapsus
         /// <see cref="Frame.Navigate(Type, Object)"/> when this page was initially requested and
         /// a dictionary of state preserved by this page during an earlier
         /// session.  The state will be null the first time a page is visited.</param>
-        private /*async*/ void NavigationHelper_LoadState(object sender, LoadStateEventArgs e)
+        private void NavigationHelper_LoadState(object sender, LoadStateEventArgs e)
         {
-            m_getConfigTask = m_dbApi.GetConfiguration();
-            m_searchParameter = e.NavigationParameter.ToString();
+            var dbApi = new TMDB.TMDBAPI();
+            m_getConfigTask = dbApi.GetConfiguration();
+            var searchParameter = e.NavigationParameter.ToString();
 
-            provider = new Provider(m_dbApi, m_searchParameter);
+            provider = new Provider(dbApi, searchParameter);
 
             if (e.PageState != null)
             {
@@ -320,51 +321,13 @@ namespace MovieLapsus
             }
 
             sender.Tag = null;
-            if (SearchForActor)
-            {
-                await RefreshMovieSuggestions(sender);
-            }
-            else
-            {
-                await RefreshActorSuggestions(sender);
-            }
-        }
-
-        private async System.Threading.Tasks.Task RefreshActorSuggestions(AutoSuggestBox sender)
-        {
-            sender.Tag = null;
-            if (sender.Text.Length <= 2)
-            {
-                sender.ItemsSource = new string[] { };
-                return;
-            }
-
-            var searchInfo = await m_dbApi.SearchForActor(sender.Text);
-            if (searchInfo.results.Count == 0)
-                return;
-
-            var suggestions = (from result in searchInfo.results
-                                   select result).Take(7);
-
-            sender.ItemsSource = suggestions;
-        }
-
-        private async System.Threading.Tasks.Task RefreshMovieSuggestions(AutoSuggestBox sender)
-        {
-            sender.Tag = null;
             if (sender.Text.Length <= 3)
             {
                 sender.ItemsSource = new string[] { };
                 return;
             }
 
-            var searchInfo = await m_dbApi.SearchForMovie(sender.Text, true);
-            if (searchInfo.results.Count == 0)
-                return;
-
-            var suggestions = (from result in searchInfo.results
-                                   select result).Take(7);
-
+            var suggestions = await provider.GetSuggestions(sender.Text);
             sender.ItemsSource = suggestions;
         }
 
