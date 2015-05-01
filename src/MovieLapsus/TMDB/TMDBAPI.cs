@@ -51,6 +51,9 @@ namespace MovieLapsus
                 DataContractJsonSerializer js = new DataContractJsonSerializer(typeof(SearchActor_Result));
                 MemoryStream stream = new MemoryStream(Encoding.UTF8.GetBytes(searchResultString));
                 var resultObject = (SearchActor_Result)js.ReadObject(stream);
+
+                if (resultObject == null)
+                    resultObject = new SearchActor_Result();
                 return resultObject;
             }
 
@@ -61,6 +64,9 @@ namespace MovieLapsus
                 DataContractJsonSerializer js = new DataContractJsonSerializer(typeof(SearchMovie_Page));
                 MemoryStream stream = new MemoryStream(Encoding.UTF8.GetBytes(searchResultString));
                 var resultObject = (SearchMovie_Page)js.ReadObject(stream);
+
+                if (resultObject == null)
+                    resultObject = new SearchMovie_Page();
                 return resultObject;
             }
             public async Task<ActorBiography> GetActorBiographyFromID(string actorID)
@@ -70,6 +76,9 @@ namespace MovieLapsus
                 DataContractJsonSerializer js = new DataContractJsonSerializer(typeof(ActorBiography));
                 MemoryStream stream = new MemoryStream(Encoding.UTF8.GetBytes(actorInfoQuery));
                 var resultObject = (ActorBiography)js.ReadObject(stream);
+
+                if (resultObject == null)
+                    resultObject = new ActorBiography();
                 return resultObject;
             }
 
@@ -81,6 +90,8 @@ namespace MovieLapsus
                 MemoryStream stream = new MemoryStream(Encoding.UTF8.GetBytes(query));
                 var resultObject = (MovieDescription)js.ReadObject(stream);
 
+                if (resultObject == null)
+                    resultObject = new MovieDescription();
                 return resultObject;
             }
 
@@ -92,6 +103,8 @@ namespace MovieLapsus
                 MemoryStream stream = new MemoryStream(Encoding.UTF8.GetBytes(query));
                 var resultObject = (MovieCredits)js.ReadObject(stream);
 
+                if (resultObject == null)
+                    resultObject = new MovieCredits();
                 return resultObject;
             }
 
@@ -102,6 +115,9 @@ namespace MovieLapsus
                 DataContractJsonSerializer js = new DataContractJsonSerializer(typeof(ActorMoviesByID));
                 MemoryStream stream = new MemoryStream(Encoding.UTF8.GetBytes(actorInfoQuery));
                 var resultObject = (ActorMoviesByID)js.ReadObject(stream);
+                
+                if (resultObject == null)
+                    resultObject = new ActorMoviesByID();
                 return resultObject;
             }
 
@@ -128,6 +144,8 @@ namespace MovieLapsus
                 MemoryStream stream = new MemoryStream(Encoding.UTF8.GetBytes(query));
                 var resultObject = (ActorImagesByID)js.ReadObject(stream);
 
+                if (resultObject == null)
+                    resultObject = new ActorImagesByID();
                 return resultObject;
             }
 
@@ -142,6 +160,9 @@ namespace MovieLapsus
                     MemoryStream stream = new MemoryStream(Encoding.UTF8.GetBytes(query));
                     _configuration = (DBConfig)js.ReadObject(stream);
                 }
+
+                if (_configuration == null)
+                    _configuration = new DBConfig();
                 return _configuration;
             }
         }

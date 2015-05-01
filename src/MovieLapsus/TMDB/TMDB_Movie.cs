@@ -45,6 +45,7 @@ namespace MovieLapsus
             public string ID { get; private set; }
             public string Name { get; private set; }
             public float Popularity { get; private set; }
+            public float VoteAverage { get; private set; }
             public string ImdbID { get; private set; }
             public string PictureURL { get; private set; }
             public string ReleaseDate { get; private set; }
@@ -67,6 +68,7 @@ namespace MovieLapsus
                 this.ImdbID = movieDesc.imdb_id;
                 this.PictureURL = api.MakeMoviePosterPath(movieDesc.poster_path);
                 this.ReleaseDate = movieDesc.release_date;
+                this.VoteAverage = movieDesc.vote_average;
             }
 
             public async Task LoadCharacters(MovieLapsus.TMDB.TMDBAPI api)
@@ -107,7 +109,8 @@ namespace MovieLapsus
 
             public string ItemSubtitle()
             {
-                return "desc";
+                
+                return string.Format("Vote: {0} / 10", VoteAverage.ToString());
             }
 
             public string ItemImageUrl()

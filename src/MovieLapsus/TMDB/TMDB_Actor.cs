@@ -77,7 +77,7 @@ namespace MovieLapsus
 
             public string ItemSubtitle()
             {
-                return Popularity.ToString();
+                return string.Format("Popularity: {0}", Popularity.ToString("0.00"));
             }
 
 

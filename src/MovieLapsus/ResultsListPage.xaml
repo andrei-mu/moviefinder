@@ -75,14 +75,17 @@
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
-        <UI:AdControl AutoRefreshIntervalInSeconds="60"
-                      ApplicationId="test_client"
-                      AdUnitId="Image320_50"
-                      HorizontalAlignment="Left"
+        <UI:AdControl x:Name="adCtrl" AutoRefreshIntervalInSeconds="60"
+                      Visibility="Visible"
+                      ApplicationId="4f7522de-eccf-4ae5-b26b-6f5f178b042d"
+                      AdUnitId="218524"
+                      HorizontalAlignment="Center" 
                       Height="50"
-                      Width="390"
-                      IsAutoRefreshEnabled="True" 
+                      Width="320"
+                      IsAutoRefreshEnabled="True"
+                      Margin="0,0,0,0"
                       Grid.Row="2"
-                      VerticalAlignment="Center"/>
+                      VerticalAlignment="Top" ErrorOccurred="OnError"/>
+
     </Grid>
 </Page>

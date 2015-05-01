@@ -12,69 +12,71 @@ namespace MovieLapsus
     public class ActorBiography
     {
         [DataMember]
-        public int id;
+        public int id = 0;
         [DataMember]
-        public bool adult;
+        public bool adult = false;
         [DataMember]
-        public string biography;
+        public string biography = "";
         [DataMember]
-        public string birthday;
+        public string birthday = "";
         [DataMember]
-        public string imdb_id;
+        public string imdb_id = "";
         [DataMember]
-        public string name;
+        public string name = "";
         [DataMember]
-        public float popularity;
+        public float popularity = 0.0f;
         [DataMember]
-        public string profile_path;
+        public string profile_path = "";
     }
 
     [DataContract]
     public class MovieDescription
     {
         [DataMember]
-        public int id;
+        public int id = 0;
         [DataMember]
-        public bool adult;
+        public bool adult = false;
         [DataMember]
-        public string imdb_id;
+        public string imdb_id = "";
         [DataMember]
-        public string original_title;
+        public string original_title = "";
         [DataMember]
-        public string poster_path;
+        public string poster_path = "";
         [DataMember]
-        public string overview;
+        public string overview = "";
         [DataMember]
-        public string tagline;
+        public string tagline = "";
         [DataMember]
-        public string release_date;
+        public string release_date = "";
         [DataMember]
-        public float popularity;
+        public float popularity = 0.0f;
+        [DataMember]
+        public float vote_average = 0.0f;
     }
 
     [DataContract]
     public class SearchActor_MovieInfo
     {
         [DataMember]
-        public bool adult;
+        public bool adult = false;
         [DataMember]
-        public string backdrop_path;
+        public string backdrop_path = "";
         [DataMember]
-        public int id;
+        public int id = 0;
         [DataMember]
-        public string original_title;
+        public string original_title = "";
         [DataMember]
-        public string release_date;
+        public string release_date = "";
         [DataMember]
-        public string poster_path;
+        public string poster_path = "";
         [DataMember]
-        public double popularity;
+        public double popularity = 0.0;
         [DataMember]
-        public string title;
+        public string title = "";
         [DataMember]
-        public string vote_average;
+        public string vote_average = "";
         [DataMember]
-        public int vote_count;
+        public int vote_count = 0;
         [DataMember]
         public string media_type;
     };
@@ -83,17 +85,17 @@ namespace MovieLapsus
     public class SearchActor_ActorInfo
     {
         [DataMember]
-        public bool adult;
+        public bool adult = false;
         [DataMember]
-        public int id;
+        public int id = 0;
         [DataMember]
-        public List<SearchActor_MovieInfo> known_for;
+        public List<SearchActor_MovieInfo> known_for = new List<SearchActor_MovieInfo>();
         [DataMember]
-        public string name;
+        public string name = "";
         [DataMember]
-        public double popularity;
+        public double popularity = 0.0;
         [DataMember]
-        public string profile_path;
+        public string profile_path = "";
 
         public override string ToString()
         {
@@ -105,19 +107,19 @@ namespace MovieLapsus
     public class SearchMovie_Result
     {
         [DataMember]
-        public bool adult;
+        public bool adult = false;
         [DataMember]
-        public int id;
+        public int id = 0;
         [DataMember]
-        public string original_title;
+        public string original_title = "";
         [DataMember]
-        public string release_date;
+        public string release_date = "";
         [DataMember]
-        public string poster_path;
+        public string poster_path = "";
         [DataMember]
-        public float popularity;
+        public float popularity = 0.0f;
         [DataMember]
-        public string title;
+        public string title = "";
 
         public override string ToString()
         {
@@ -129,46 +131,46 @@ namespace MovieLapsus
     public class SearchMovie_Page
     {
         [DataMember]
-        public int page;
+        public int page = 0;
 
         [DataMember]
-        public List<SearchMovie_Result> results; 
+        public List<SearchMovie_Result> results = new List<SearchMovie_Result>(); 
     }
 
     [DataContract]
     public class SearchActor_Result
     {
         [DataMember]
-        public int page;
+        public int page = 0;
         [DataMember]
-        public List<SearchActor_ActorInfo> results;
+        public List<SearchActor_ActorInfo> results = new List<SearchActor_ActorInfo>();
         [DataMember]
-        public int total_pages;
+        public int total_pages = 0;
         [DataMember]
-        public int total_results;
+        public int total_results = 0;
     }
 
     [DataContract]
     public class MovieInfoByID_Cast
     {
         [DataMember]
-        public bool adult;
+        public bool adult = false;
         [DataMember]
-        public string character;
+        public string character = "";
         [DataMember]
-        public string credit_id;
+        public string credit_id = "";
         [DataMember]
-        public int id;
+        public int id = 0;
         [DataMember]
-        public string original_title;
+        public string original_title = "";
         [DataMember]
-        public string original_name;
+        public string original_name = "";
         [DataMember]
-        public string poster_path;
+        public string poster_path = "";
         [DataMember]
-        public string release_date;
+        public string release_date = "";
         [DataMember]
-        public string media_type;
+        public string media_type = "";
 
         public string Name()
         {
@@ -207,72 +209,72 @@ namespace MovieLapsus
     public class MovieCredits_Cast
     {
         [DataMember]
-        public int cast_id;
+        public int cast_id = 0;
         [DataMember]
-        public string character;
+        public string character = "";
         [DataMember]
-        public string credit_id;
+        public string credit_id = "";
         [DataMember]
-        public int id;
+        public int id = 0;
         [DataMember]
-        public string name;
+        public string name = "";
         [DataMember]
-        public string profile_path;
+        public string profile_path = "";
     }
 
     [DataContract]
     public class MovieCredits
     {
         [DataMember]
-        public int id;
+        public int id = 0;
         [DataMember]
-        public List<MovieCredits_Cast> cast;
+        public List<MovieCredits_Cast> cast = new List<MovieCredits_Cast>();
     }
 
     [DataContract]
     public class ActorMoviesByID
     {
         [DataMember]
-        public int id;
+        public int id = 0;
         [DataMember]
-        public List<MovieInfoByID_Cast> cast;
+        public List<MovieInfoByID_Cast> cast = new List<MovieInfoByID_Cast>();
     }
 
     [DataContract]
     public class ActorImageProfile
     {
         [DataMember]
-        public string file_path;
+        public string file_path = "";
         [DataMember]
-        public int width;
+        public int width = 0;
         [DataMember]
-        public int height;
+        public int height = 0;
     }
     
     [DataContract]
     public class ActorImagesByID
     {
         [DataMember]
-        public int id;
+        public int id = 0;
         [DataMember]
-        public List<ActorImageProfile> profiles;
+        public List<ActorImageProfile> profiles = new List<ActorImageProfile>();
     }
 
     [DataContract]
     public class DBImages
     {
         [DataMember]
-        public string base_url;
+        public string base_url = "";
         [DataMember]
-        public List<string> backdrop_sizes;
+        public List<string> backdrop_sizes = new List<string>();
         [DataMember]
-        public List<string> logo_sizes;
+        public List<string> logo_sizes = new List<string>();
         [DataMember]
-        public List<string> poster_sizes;
+        public List<string> poster_sizes = new List<string>();
         [DataMember]
-        public List<string> profile_sizes;
+        public List<string> profile_sizes = new List<string>();
         [DataMember]
-        public List<string> still_sizes;
+        public List<string> still_sizes = new List<string>();
     }
 
     [DataContract]
