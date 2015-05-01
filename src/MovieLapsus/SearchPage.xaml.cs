@@ -100,6 +100,39 @@ namespace MovieLapsus
             }
         }
 
+        public async Task<string> GetIdFromName(string text)
+        {
+            if (text == null || text.Length == 0)
+                return null;
+
+            if (movieSearch)
+            {
+                var searchInfoActor = await m_dbApi.SearchForActor(text);
+                if (searchInfoActor.results.Count > 0)
+                {
+                    var actor = (from result in searchInfoActor.results
+                                 orderby result.popularity descending
+                                 select result).First();
+
+                    return actor.id.ToString();
+                }
+            }
+            else
+            {
+                var searchInfo = await m_dbApi.SearchForMovie(text, false);
+                if (searchInfo.results.Count > 0)
+                {
+                    var movie = (from result in searchInfo.results
+                                 orderby result.popularity descending
+                                 select result).First();
+
+                    return movie.id.ToString();
+                }
+            }
+
+            return null;
+        }
+
         public string GetObjectIdStr(Object obj)
         {
             try
@@ -259,20 +292,14 @@ namespace MovieLapsus
         {
             commonMovies.Text = "";
 
-            string id1 = "",
-                   id2 = "";
-            if (autoSuggest1.Tag == null)
-            {
-
-            }
             if (autoSuggest1.Tag == null && autoSuggest2.Tag == null)
             {
                 commonMovies.Text = "Unknown actor(s) selected!";
                 return;
             }
 
-            id1 = (autoSuggest1.Tag == null)? null : autoSuggest1.Tag.ToString();
-            id2 = (autoSuggest2.Tag == null) ? null : autoSuggest2.Tag.ToString();
+            string id1 = (autoSuggest1.Tag == null)? null : autoSuggest1.Tag.ToString();
+            string id2 = (autoSuggest2.Tag == null) ? null : autoSuggest2.Tag.ToString();
 
             var list = await this.provider.GetCommonResults(id1, id2);
 
@@ -452,6 +479,10 @@ namespace MovieLapsus
         {
             var imageControl = this.ImageControlFromEditControl(suggestBox);
 
+            if (suggestBox.Tag == null)
+            {
+                suggestBox.Tag = await provider.GetIdFromName(suggestBox.Text);
+            }
             if (suggestBox.Tag == null)
             {
                 imageControl.Source = null;
