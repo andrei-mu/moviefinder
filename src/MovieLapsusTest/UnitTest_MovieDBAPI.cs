@@ -88,7 +88,7 @@ namespace MovieLapsusTest
             var actorList = await api.SearchForActor("pitt");
 
             Assert.AreEqual(20, actorList.results.Count);
-            Assert.AreEqual(7, actorList.total_pages);
+            Assert.AreEqual(8, actorList.total_pages);
             Assert.IsTrue(actorList.total_results > 121);
 
             MovieLapsus.SearchActor_ActorInfo actorInfo = (
