@@ -1,0 +1,4 @@
+MainPackage=C:\Users\Andrei\Documents\Visual Studio 2013\TFS\moviefinder\src\MovieLapsus\bin\Release\MovieLapsus_1.1.0.1_Bundle\MovieLapsus_1.1.0.1_AnyCPU.appx
+SymbolPackage=C:\Users\Andrei\Documents\Visual Studio 2013\TFS\moviefinder\src\MovieLapsus\AppPackages\MovieLapsus_1.1.0.1_Test\MovieLapsus_1.1.0.1_AnyCPU.appxsym
+ResourcePack=C:\Users\Andrei\Documents\Visual Studio 2013\TFS\moviefinder\src\MovieLapsus\bin\Release\MovieLapsus_1.1.0.1_Bundle\MovieLapsus_1.1.0.1_scale-100.appx
+ResourcePack=C:\Users\Andrei\Documents\Visual Studio 2013\TFS\moviefinder\src\MovieLapsus\bin\Release\MovieLapsus_1.1.0.1_Bundle\MovieLapsus_1.1.0.1_scale-140.appx
