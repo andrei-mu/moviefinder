@@ -141,6 +141,7 @@
     <Content Include="Assets\StoreLogo.scale-100.png" />
     <Content Include="Assets\StoreLogo.scale-140.png" />
     <Content Include="Assets\StoreLogo.scale-240.png" />
+    <Content Include="Assets\StoreLogo.scale-300x300.png" />
     <Content Include="neutral.txt" />
     <None Include="Package.StoreAssociation.xml" />
   </ItemGroup>
