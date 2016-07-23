@@ -1,69 +1,42 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.30723.0
+# Visual Studio 14
+VisualStudioVersion = 14.0.25123.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MovieLapsusTest", "MovieLapsusTest\MovieLapsusTest.csproj", "{E7A3CA06-96FB-44F3-8FE5-789D17AA64B1}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTests", "UnitTests\UnitTests.csproj", "{1DD66254-1834-4479-938A-658AD4916E28}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MovieLapsus", "MovieLapsus\MovieLapsus.csproj", "{3DEA79B1-9E9D-4C3E-887D-CBEF65EECB4F}"
 EndProject
 Global
-	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 3
-		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
-		SccTeamFoundationServer = https://amuraru.visualstudio.com/defaultcollection
-		SccLocalPath0 = .
-		SccProjectUniqueName1 = MovieLapsus\\MovieLapsus.csproj
-		SccProjectName1 = MovieLapsus
-		SccLocalPath1 = MovieLapsus
-		SccProjectUniqueName2 = MovieLapsusTest\\MovieLapsusTest.csproj
-		SccProjectName2 = MovieLapsusTest
-		SccLocalPath2 = MovieLapsusTest
-	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Debug|ARM = Debug|ARM
-		Debug|Mixed Platforms = Debug|Mixed Platforms
 		Debug|x86 = Debug|x86
 		Release|Any CPU = Release|Any CPU
 		Release|ARM = Release|ARM
-		Release|Mixed Platforms = Release|Mixed Platforms
 		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{E7A3CA06-96FB-44F3-8FE5-789D17AA64B1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E7A3CA06-96FB-44F3-8FE5-789D17AA64B1}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E7A3CA06-96FB-44F3-8FE5-789D17AA64B1}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
-		{E7A3CA06-96FB-44F3-8FE5-789D17AA64B1}.Debug|ARM.ActiveCfg = Debug|ARM
-		{E7A3CA06-96FB-44F3-8FE5-789D17AA64B1}.Debug|ARM.Build.0 = Debug|ARM
-		{E7A3CA06-96FB-44F3-8FE5-789D17AA64B1}.Debug|ARM.Deploy.0 = Debug|ARM
-		{E7A3CA06-96FB-44F3-8FE5-789D17AA64B1}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
-		{E7A3CA06-96FB-44F3-8FE5-789D17AA64B1}.Debug|Mixed Platforms.Build.0 = Debug|x86
-		{E7A3CA06-96FB-44F3-8FE5-789D17AA64B1}.Debug|Mixed Platforms.Deploy.0 = Debug|x86
-		{E7A3CA06-96FB-44F3-8FE5-789D17AA64B1}.Debug|x86.ActiveCfg = Debug|x86
-		{E7A3CA06-96FB-44F3-8FE5-789D17AA64B1}.Debug|x86.Build.0 = Debug|x86
-		{E7A3CA06-96FB-44F3-8FE5-789D17AA64B1}.Debug|x86.Deploy.0 = Debug|x86
-		{E7A3CA06-96FB-44F3-8FE5-789D17AA64B1}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E7A3CA06-96FB-44F3-8FE5-789D17AA64B1}.Release|Any CPU.Build.0 = Release|Any CPU
-		{E7A3CA06-96FB-44F3-8FE5-789D17AA64B1}.Release|Any CPU.Deploy.0 = Release|Any CPU
-		{E7A3CA06-96FB-44F3-8FE5-789D17AA64B1}.Release|ARM.ActiveCfg = Release|ARM
-		{E7A3CA06-96FB-44F3-8FE5-789D17AA64B1}.Release|ARM.Build.0 = Release|ARM
-		{E7A3CA06-96FB-44F3-8FE5-789D17AA64B1}.Release|ARM.Deploy.0 = Release|ARM
-		{E7A3CA06-96FB-44F3-8FE5-789D17AA64B1}.Release|Mixed Platforms.ActiveCfg = Release|x86
-		{E7A3CA06-96FB-44F3-8FE5-789D17AA64B1}.Release|Mixed Platforms.Build.0 = Release|x86
-		{E7A3CA06-96FB-44F3-8FE5-789D17AA64B1}.Release|Mixed Platforms.Deploy.0 = Release|x86
-		{E7A3CA06-96FB-44F3-8FE5-789D17AA64B1}.Release|x86.ActiveCfg = Release|x86
-		{E7A3CA06-96FB-44F3-8FE5-789D17AA64B1}.Release|x86.Build.0 = Release|x86
-		{E7A3CA06-96FB-44F3-8FE5-789D17AA64B1}.Release|x86.Deploy.0 = Release|x86
+		{1DD66254-1834-4479-938A-658AD4916E28}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{1DD66254-1834-4479-938A-658AD4916E28}.Debug|ARM.ActiveCfg = Debug|ARM
+		{1DD66254-1834-4479-938A-658AD4916E28}.Debug|ARM.Build.0 = Debug|ARM
+		{1DD66254-1834-4479-938A-658AD4916E28}.Debug|ARM.Deploy.0 = Debug|ARM
+		{1DD66254-1834-4479-938A-658AD4916E28}.Debug|x86.ActiveCfg = Debug|x86
+		{1DD66254-1834-4479-938A-658AD4916E28}.Debug|x86.Build.0 = Debug|x86
+		{1DD66254-1834-4479-938A-658AD4916E28}.Debug|x86.Deploy.0 = Debug|x86
+		{1DD66254-1834-4479-938A-658AD4916E28}.Release|Any CPU.ActiveCfg = Release|x86
+		{1DD66254-1834-4479-938A-658AD4916E28}.Release|ARM.ActiveCfg = Release|ARM
+		{1DD66254-1834-4479-938A-658AD4916E28}.Release|ARM.Build.0 = Release|ARM
+		{1DD66254-1834-4479-938A-658AD4916E28}.Release|ARM.Deploy.0 = Release|ARM
+		{1DD66254-1834-4479-938A-658AD4916E28}.Release|x86.ActiveCfg = Release|x86
+		{1DD66254-1834-4479-938A-658AD4916E28}.Release|x86.Build.0 = Release|x86
+		{1DD66254-1834-4479-938A-658AD4916E28}.Release|x86.Deploy.0 = Release|x86
 		{3DEA79B1-9E9D-4C3E-887D-CBEF65EECB4F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{3DEA79B1-9E9D-4C3E-887D-CBEF65EECB4F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3DEA79B1-9E9D-4C3E-887D-CBEF65EECB4F}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
 		{3DEA79B1-9E9D-4C3E-887D-CBEF65EECB4F}.Debug|ARM.ActiveCfg = Debug|ARM
 		{3DEA79B1-9E9D-4C3E-887D-CBEF65EECB4F}.Debug|ARM.Build.0 = Debug|ARM
 		{3DEA79B1-9E9D-4C3E-887D-CBEF65EECB4F}.Debug|ARM.Deploy.0 = Debug|ARM
-		{3DEA79B1-9E9D-4C3E-887D-CBEF65EECB4F}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
-		{3DEA79B1-9E9D-4C3E-887D-CBEF65EECB4F}.Debug|Mixed Platforms.Build.0 = Debug|x86
-		{3DEA79B1-9E9D-4C3E-887D-CBEF65EECB4F}.Debug|Mixed Platforms.Deploy.0 = Debug|x86
 		{3DEA79B1-9E9D-4C3E-887D-CBEF65EECB4F}.Debug|x86.ActiveCfg = Debug|x86
 		{3DEA79B1-9E9D-4C3E-887D-CBEF65EECB4F}.Debug|x86.Build.0 = Debug|x86
 		{3DEA79B1-9E9D-4C3E-887D-CBEF65EECB4F}.Debug|x86.Deploy.0 = Debug|x86
@@ -73,14 +46,23 @@ Global
 		{3DEA79B1-9E9D-4C3E-887D-CBEF65EECB4F}.Release|ARM.ActiveCfg = Release|ARM
 		{3DEA79B1-9E9D-4C3E-887D-CBEF65EECB4F}.Release|ARM.Build.0 = Release|ARM
 		{3DEA79B1-9E9D-4C3E-887D-CBEF65EECB4F}.Release|ARM.Deploy.0 = Release|ARM
-		{3DEA79B1-9E9D-4C3E-887D-CBEF65EECB4F}.Release|Mixed Platforms.ActiveCfg = Release|x86
-		{3DEA79B1-9E9D-4C3E-887D-CBEF65EECB4F}.Release|Mixed Platforms.Build.0 = Release|x86
-		{3DEA79B1-9E9D-4C3E-887D-CBEF65EECB4F}.Release|Mixed Platforms.Deploy.0 = Release|x86
 		{3DEA79B1-9E9D-4C3E-887D-CBEF65EECB4F}.Release|x86.ActiveCfg = Release|x86
 		{3DEA79B1-9E9D-4C3E-887D-CBEF65EECB4F}.Release|x86.Build.0 = Release|x86
 		{3DEA79B1-9E9D-4C3E-887D-CBEF65EECB4F}.Release|x86.Deploy.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(TeamFoundationVersionControl) = preSolution
+		SccNumberOfProjects = 3
+		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccTeamFoundationServer = https://amuraru.visualstudio.com/
+		SccProjectUniqueName0 = UnitTests\\UnitTests.csproj
+		SccProjectName0 = UnitTests
+		SccLocalPath0 = UnitTests
+		SccLocalPath1 = .
+		SccProjectUniqueName2 = MovieLapsus\\MovieLapsus.csproj
+		SccProjectName2 = MovieLapsus
+		SccLocalPath2 = MovieLapsus
 	EndGlobalSection
 EndGlobal
