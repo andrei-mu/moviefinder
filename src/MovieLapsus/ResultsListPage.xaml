@@ -1,11 +1,8 @@
 ﻿<Page
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="using:App2"
-    xmlns:data="using:App2.Data"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:UI="using:Microsoft.Advertising.Mobile.UI"
     x:Name="pageRoot"
     x:Class="MovieLapsus.ResultsListPage"
     mc:Ignorable="d"
@@ -75,17 +72,5 @@
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
-        <UI:AdControl x:Name="adCtrl" AutoRefreshIntervalInSeconds="60"
-                      Visibility="Visible"
-                      ApplicationId="4f7522de-eccf-4ae5-b26b-6f5f178b042d"
-                      AdUnitId="218524"
-                      HorizontalAlignment="Center" 
-                      Height="50"
-                      Width="320"
-                      IsAutoRefreshEnabled="True"
-                      Margin="0,0,0,0"
-                      Grid.Row="2"
-                      VerticalAlignment="Top" ErrorOccurred="OnError"/>
-
     </Grid>
 </Page>

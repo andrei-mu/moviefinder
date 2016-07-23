@@ -151,9 +151,9 @@ namespace MovieLapsus
 
         #endregion
 
-        private void OnError(object sender, Microsoft.Advertising.Mobile.Common.AdErrorEventArgs e)
-        {
-            return;
-        }
+        //private void OnError(object sender, Microsoft.Advertising.Mobile.Common.AdErrorEventArgs e)
+        //{
+        //    return;
+        //}
     }
 }
